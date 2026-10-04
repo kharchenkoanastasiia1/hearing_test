@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">HearingTest</string>
+    <string name="left">Начать</string>
+    <string name="sexChoise">Выберите пол:</string>
+    <string name="sexMale">Мужской</string>
+    <string name="sexFemale">Женский</string>
+    <string name="ageChoise">Выберите возраст</string>
+    <string name="nameChoise">Введите nickname</string>
+    <string name="buttonSave">Сохранить</string>
+    <string name="startTest">Начать тестирование</string>
+    <string name="lookResult">Посмотреть результаты</string>
+    <string name="redactUser">Пользователь</string>
+    <string name="changeUser">Сменить пользователя</string>
+    <string name="startTesting">Начать</string>
+    <string name="onHeadphones">Подключите наушники</string>
+    <string name="onMaxVolume">Включите громкость на максимум</string>
+    <string name="hearingTestString">Перед тестированием слуха</string>
+    <string name="keepQuiet">Соблюдайте тишину</string>
+    <string name="moreButton">Подробнее</string>
+    <string name="forTestClick">Для начала тестирования/когда услышите звук нажмите на кнопку</string>
+    <string name="createUser">Создать пользователя</string>
+    <string name="ok">X</string>
+    <string name="userDataRedact">Редактировать данные</string>
+    <string name="menuUser">Пользователь</string>
+    <string name="menuLookResult">Посмотреть результаты</string>
+    <string name="menuNorm">Определить норму</string>
+    <string name="leftButton">Левое</string>
+    <string name="RightButton">Правое</string>
+    <string name="individualNormCheckBox">Пересчитать индивидуальную норму</string>
+    <string name="personText">Персональная</string>
+    <string name="populText">Популяционная</string>
+    <string name="determine_the_norm">Определить норму</string>
+    <string name="lookNorm">Посмотреть норму</string>
+    <string name="hear">Слышу</string>
+    <string name="hearRightEar">Звук в правом наушнике ;)</string>
+    <string name="hearLeftEar">Звук в левом наушнике ;)</string>
+    <string name="dialogWindow">Диалоговое окно</string>
+    <string name="dialogDeleteAudiogram">Вы хотите удалить аудиограмму?</string>
+    <string name="cancel">Отмена</string>
+    <string name="connect_to_server">Подключиться к серверу</string>
+    <string name="buttonDisconnect">Вернуться в меню</string>
+</resources>

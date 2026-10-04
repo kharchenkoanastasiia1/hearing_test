@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">HearingTest</string>
+    <string name="left">Старт</string>
+    <string name="sexChoise">Виберіть стать:</string>
+    <string name="sexMale">Чоловік</string>
+    <string name="sexFemale">Жінка</string>
+    <string name="ageChoise">Виберіть вік</string>
+    <string name="nameChoise">Введіть nickname</string>
+    <string name="buttonSave">Зберегти</string>
+    <string name="startTest">Почати тестування</string>
+    <string name="lookResult">Переглянути результати</string>
+    <string name="redactUser">Користувач</string>
+    <string name="changeUser">Змінити користувача</string>
+    <string name="startTesting">Експрес</string>
+    <string name="startAdvancedTesting">Розширене</string>
+    <string name="onHeadphones">Підключіть навушники</string>
+    <string name="onMaxVolume">Збільште гучність до максимуму</string>
+    <string name="hearingTestString">Перед перевіркою слуху</string>
+    <string name="keepQuiet">Зберігайте тишу</string>
+    <string name="moreButton">Детальніше</string>
+    <string name="forTestClick">Щоб почати тестування / коли ви почуєте звук, натисніть кнопку</string>
+    <string name="createUser">Створити користувача</string>
+    <string name="ok">X</string>
+    <string name="userDataRedact">Редагувати дані</string>
+    <string name="menuUser">Користувач</string>
+    <string name="menuLookResult">Переглянути результати</string>
+    <string name="menuNorm">Визначити норму</string>
+    <string name="leftButton">Лівий</string>
+    <string name="RightButton">Правий</string>
+    <string name="individualNormCheckBox">Перерахувати індивідуальну норму</string>
+    <string name="personText">Персональна</string>
+    <string name="populText">Популяційна</string>
+    <string name="determine_the_norm">Визначити норму</string>
+    <string name="lookNorm">Переглянути норму</string>
+    <string name="hear">Чую</string>
+    <string name="notHear">Не чую</string>
+    <string name="hearRightEar">Звук у правому вусі ;)</string>
+    <string name="hearLeftEar">Звук у лівому вусі ;)</string>
+    <string name="dialogWindow">Діалогове вікно</string>
+    <string name="dialogDeleteAudiogram">Ви бажаєте видалити аудіограму?</string>
+    <string name="cancel">Cancel</string>
+    <string name="connect_to_server">Підключитися до сервера</string>
+    <string name="buttonDisconnect">Повернутися до меню</string>
+</resources>
