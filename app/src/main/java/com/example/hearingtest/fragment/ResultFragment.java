@@ -14,7 +14,7 @@ import android.widget.Button;
 
 import com.example.hearingtest.MainActivity;
 import com.example.hearingtest.R;
-import com.example.hearingtest.adapter.DBAdapter;
+import com.example.hearingtest.db.DBAdapter;
 import com.example.hearingtest.adapter.GraphicAdapter;
 import com.example.hearingtest.audiogram.Audiogram;
 

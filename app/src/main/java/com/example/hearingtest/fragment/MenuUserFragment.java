@@ -1,6 +1,6 @@
 package com.example.hearingtest.fragment;
 
-import static com.example.hearingtest.referencebook.Constants.choiseUser;
+import static com.example.hearingtest.constants.Constants.choiseUser;
 
 import android.content.SharedPreferences;
 import android.os.Build;
@@ -21,8 +21,8 @@ import androidx.fragment.app.Fragment;
 
 import com.example.hearingtest.MainActivity;
 import com.example.hearingtest.R;
-import com.example.hearingtest.adapter.DBAdapter;
-import com.example.hearingtest.referencebook.Constants;
+import com.example.hearingtest.db.DBAdapter;
+import com.example.hearingtest.constants.Constants;
 import com.example.hearingtest.users.User;
 import com.example.hearingtest.users.UserCollection;
 
@@ -118,9 +118,9 @@ public class MenuUserFragment extends Fragment {
         usersCollection = adapterDB.getUsers();
         adapterDB.close();
 
-        userData = new String[usersCollection.users.size()+1];
+        userData = new String[usersCollection.getUsers().size()+1];
         userData[0] = choiseUser;
-        for(int i = 0; i < usersCollection.users.size(); i++ ){
+        for(int i = 0; i < usersCollection.getUsers().size(); i++ ){
             userData[i+1] = usersCollection.getUsers().get(i).getNameUser();
         }
     }

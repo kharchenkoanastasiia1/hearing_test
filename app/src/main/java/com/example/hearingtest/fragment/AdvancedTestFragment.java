@@ -19,21 +19,21 @@ import androidx.lifecycle.ViewModelProvider;
 import com.example.hearingtest.MainActivity;
 import com.example.hearingtest.R;
 import com.example.hearingtest.audiogram.Audiogram;
-import com.example.hearingtest.referencebook.Constants;
+import com.example.hearingtest.constants.Constants;
 import com.example.hearingtest.viewmodel.ViewModelTestAdvanced;
 import java.text.ParseException;
 import java.util.Objects;
 
 public class AdvancedTestFragment extends Fragment {
-    public Audiogram audiogram;
-    public ViewModelTestAdvanced model;
-    public Boolean endTest = false;
-    public Boolean start = false;
-    public Button btnHear;
-    public Button btnNotHear;
-    public Button btnStart;
-    public ImageView leftImage;
-    public ImageView rightImage;
+    private Audiogram audiogram;
+    private ViewModelTestAdvanced model;
+    private Boolean endTest = false;
+    private Boolean start = false;
+    private Button btnHear;
+    private Button btnNotHear;
+    private Button btnStart;
+    private ImageView leftImage;
+    private ImageView rightImage;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -110,7 +110,7 @@ public class AdvancedTestFragment extends Fragment {
         btnNotHear.setOnClickListener(v -> model.setStatusNotHear(false));
     }
 
-    public void beginTest(){
+    private void beginTest(){
         if(!start){
             btnHear.setVisibility(View.VISIBLE);
             btnNotHear.setVisibility(View.VISIBLE);

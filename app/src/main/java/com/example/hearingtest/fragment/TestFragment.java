@@ -2,7 +2,7 @@ package com.example.hearingtest.fragment;
 import com.example.hearingtest.MainActivity;
 import com.example.hearingtest.R;
 import com.example.hearingtest.audiogram.Audiogram;
-import com.example.hearingtest.referencebook.Constants;
+import com.example.hearingtest.constants.Constants;
 import com.example.hearingtest.viewmodel.ViewModelTest;
 
 import android.os.Build;
@@ -24,11 +24,11 @@ import java.text.ParseException;
 import java.util.Objects;
 
 public class TestFragment extends Fragment {
-    public Audiogram audiogram;
-    public ViewModelTest model;
-    public Boolean endTest = false;
-    public Boolean start = false;
-    public Button btnFetch;
+    private Audiogram audiogram;
+    private ViewModelTest model;
+    private Boolean endTest = false;
+    private Boolean start = false;
+    private Button btnFetch;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -53,10 +53,10 @@ public class TestFragment extends Fragment {
         btnFetch = (Button)view.findViewById(R.id.button6);
 
         ProgressBar indicatorBarLeft = (ProgressBar) view.findViewById(R.id.progressBar3);
-        indicatorBarLeft.setMax(model.maxVolume + 20);
+        indicatorBarLeft.setMax(model.getMaxVolume() + 20);
 
         ProgressBar indicatorBarRight = (ProgressBar) view.findViewById(R.id.progressBar5);
-        indicatorBarRight.setMax(model.maxVolume + 20);
+        indicatorBarRight.setMax(model.getMaxVolume() + 20);
 
         model.getValueFrequencyLeft().observe(getViewLifecycleOwner(), valueFrequency -> {
             if(start){
@@ -91,7 +91,7 @@ public class TestFragment extends Fragment {
         btnFetch.setOnClickListener(v -> { beginTest(); audiogram = model.execute(); } );
     }
 
-    public void beginTest(){
+    private void beginTest(){
         if(!start){
             btnFetch.setText(R.string.hear);
             start = true;

@@ -1,7 +1,7 @@
 package com.example.hearingtest.fragment;
 
-import static com.example.hearingtest.referencebook.Constants.onHeadset;
-import static com.example.hearingtest.referencebook.Constants.onMaxVolume;
+import static com.example.hearingtest.constants.Constants.onHeadset;
+import static com.example.hearingtest.constants.Constants.onMaxVolume;
 import android.media.AudioDeviceInfo;
 import android.media.AudioManager;
 import android.os.Build;

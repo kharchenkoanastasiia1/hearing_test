@@ -1,4 +1,4 @@
-package com.example.hearingtest.referencebook;
+package com.example.hearingtest.constants;
 
 public class ConstantRu {
     public static final String choiseAction = "Выберите нужное действие, ";

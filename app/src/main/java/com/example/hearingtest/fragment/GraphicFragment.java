@@ -1,9 +1,9 @@
 package com.example.hearingtest.fragment;
 
-import static com.example.hearingtest.referencebook.Constants.frequency;
-import static com.example.hearingtest.referencebook.Constants.hearingLevel;
-import static com.example.hearingtest.referencebook.Constants.left;
-import static com.example.hearingtest.referencebook.Constants.right;
+import static com.example.hearingtest.constants.Constants.frequency;
+import static com.example.hearingtest.constants.Constants.hearingLevel;
+import static com.example.hearingtest.constants.Constants.left;
+import static com.example.hearingtest.constants.Constants.right;
 
 import android.os.Build;
 import android.os.Bundle;
@@ -22,6 +22,7 @@ import com.androidplot.xy.XYPlot;
 import com.androidplot.xy.XYSeries;
 import com.example.hearingtest.R;
 import com.example.hearingtest.audiogram.Audiogram;
+import lombok.Setter;
 
 import java.text.FieldPosition;
 import java.text.Format;
@@ -33,6 +34,7 @@ public class GraphicFragment extends Fragment {
     public List<Audiogram> audiograms;
     public Audiogram audiogram;
     private int pageNumber;
+    @Setter
     private static int idUser;
     private XYPlot plot;
 
@@ -71,8 +73,8 @@ public class GraphicFragment extends Fragment {
         plot.setRangeStep(StepMode.SUBDIVIDE, 12);  //сетка по оси Y
         plot.setRangeLabel(hearingLevel);
 
-        if(audiogram.getDateRecorder() != null){
-            plot.setTitle(audiogram.getDateRecorderToString());
+        if(audiogram.getDateRecord() != null){
+            plot.setTitle(audiogram.getDateRecord().toString());
         } else {
             plot.setTitle("");
         }
@@ -80,9 +82,9 @@ public class GraphicFragment extends Fragment {
         assert audiogram != null;
 
         // Данные для построения графика:
-        Number[] domainLabels = audiogram.valueFrequency;
-        Number[] series1Numbers = audiogram.valueAmplitudeLeft;
-        Number[] series2Numbers = audiogram.valueAmplitudeRight;
+        Number[] domainLabels = Audiogram.valueFrequency;
+        Number[] series1Numbers = audiogram.getValueAmplitudeLeft();
+        Number[] series2Numbers = audiogram.getValueAmplitudeRight();
 
         // Создаем серии, относительно данных аудиограммы:
         XYSeries series1 = new SimpleXYSeries(
@@ -120,9 +122,5 @@ public class GraphicFragment extends Fragment {
         });
 
         return result;
-    }
-
-    public static void setIdUser(int id){
-        idUser = id;
     }
 }

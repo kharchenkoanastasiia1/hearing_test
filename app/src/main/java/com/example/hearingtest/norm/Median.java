@@ -1,4 +1,4 @@
-package com.example.hearingtest.median;
+package com.example.hearingtest.norm;
 
 import android.content.Context;
 import android.os.Build;
@@ -6,51 +6,39 @@ import android.os.Build;
 import androidx.annotation.RequiresApi;
 
 import com.example.hearingtest.audiogram.Audiogram;
-import com.example.hearingtest.adapter.DBAdapter;
+import com.example.hearingtest.db.DBAdapter;
+import lombok.Getter;
+import lombok.Setter;
 
 import java.text.ParseException;
 import java.util.List;
 
+@Getter
+@Setter
 public class Median {
-    public List<Audiogram> audiograms;
-    public Audiogram audiogram;
-    public Integer idUser;
-    private DBAdapter adapter;
+    private List<Audiogram> audiograms;
+    private Audiogram audiogram;
+    private Integer idUser;
+    private final DBAdapter adapter;
 
     public Median(Context context, Integer id){
         idUser = id;
         adapter = new DBAdapter(context);
     }
 
-    public Audiogram getAudiogramFromMedian(){ return audiogram; }
-
-    @RequiresApi(api = Build.VERSION_CODES.O)
-    public void setAudiogramsFromDB() throws ParseException {
-        adapter.open();
-        audiograms = adapter.getAudiograms(idUser);
-        adapter.close();
-    }
-
-    public void setDBMedian(){
-        adapter.open();
-        audiogram.setIdUser(idUser);
-        adapter.insertMedian(audiogram);
-        adapter.close();
-    }
-
     @RequiresApi(api = Build.VERSION_CODES.O)
     public void calculationMedian() throws ParseException {
         setAudiogramsFromDB();
         if(audiograms.size() > 1){
-            Integer[] left = new Integer[audiograms.get(0).valueAmplitudeRight.length];
-            Integer[] right = new Integer[audiograms.get(0).valueAmplitudeRight.length];
-            Integer[][] matrixValueLeft = new Integer[audiograms.get(0).valueAmplitudeLeft.length][audiograms.size()];
-            Integer[][] matrixValueRight = new Integer[audiograms.get(0).valueAmplitudeRight.length][audiograms.size()];
+            Integer[] left = new Integer[audiograms.get(0).getValueAmplitudeLeft().length];
+            Integer[] right = new Integer[audiograms.get(0).getValueAmplitudeRight().length];
+            Integer[][] matrixValueLeft = new Integer[audiograms.get(0).getValueAmplitudeLeft().length][audiograms.size()];
+            Integer[][] matrixValueRight = new Integer[audiograms.get(0).getValueAmplitudeRight().length][audiograms.size()];
 
             for(int i = 0; i < audiograms.size(); i++){
-                for(int j = 0; j < audiograms.get(0).valueAmplitudeLeft.length; j++){
-                    matrixValueLeft[j][i] = audiograms.get(i).valueAmplitudeLeft[j];
-                    matrixValueRight[j][i] = audiograms.get(i).valueAmplitudeRight[j];
+                for(int j = 0; j < audiograms.get(0).getValueAmplitudeLeft().length; j++){
+                    matrixValueLeft[j][i] = audiograms.get(i).getValueAmplitudeLeft()[j];
+                    matrixValueRight[j][i] = audiograms.get(i).getValueAmplitudeRight()[j];
                 }
             }
             sortMatrix(matrixValueLeft);
@@ -79,7 +67,21 @@ public class Median {
         setDBMedian();
     }
 
-    public void sortMatrix(Integer[][] matrix){
+    @RequiresApi(api = Build.VERSION_CODES.O)
+    private void setAudiogramsFromDB() throws ParseException {
+        adapter.open();
+        audiograms = adapter.getAudiograms(idUser);
+        adapter.close();
+    }
+
+    private void setDBMedian(){
+        adapter.open();
+        audiogram.setIdUser(idUser);
+        adapter.insertMedian(audiogram);
+        adapter.close();
+    }
+
+    private void sortMatrix(Integer[][] matrix){
         for(int i = 0; i < matrix.length; i++){
             while (true){
                 int status = 0;

@@ -11,14 +11,14 @@ import androidx.fragment.app.DialogFragment;
 
 import com.example.hearingtest.MainActivity;
 import com.example.hearingtest.R;
-import com.example.hearingtest.adapter.DBAdapter;
+import com.example.hearingtest.db.DBAdapter;
 
 import java.util.Objects;
 
 public class DeleteDialogFragment extends DialogFragment {
 
-    public DBAdapter adapter;
-    public int idAudiogram;
+    private DBAdapter adapter;
+    private int idAudiogram;
 
     @Override
     public void onAttach(@NonNull Context context){
@@ -29,11 +29,12 @@ public class DeleteDialogFragment extends DialogFragment {
     @NonNull
     public Dialog onCreateDialog(Bundle savedInstanceState) {
 
+        assert getArguments() != null;
         idAudiogram = getArguments().getInt("idAudio");
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
         return builder
                 .setTitle(R.string.dialogWindow)
-                .setIcon(android.R.drawable.ic_dialog_alert)
+                .setIcon(R.drawable.good4)
                 .setMessage(R.string.dialogDeleteAudiogram)
                 .setPositiveButton("OK", new DialogInterface.OnClickListener() {
                     @Override
@@ -45,7 +46,7 @@ public class DeleteDialogFragment extends DialogFragment {
                 .create();
     }
 
-    public void deleteAudiogram(int idAudiogram){
+    private void deleteAudiogram(int idAudiogram){
         adapter.open();
         adapter.deleteAudiogram(idAudiogram);
         adapter.close();

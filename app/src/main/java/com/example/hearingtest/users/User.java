@@ -1,6 +1,10 @@
 package com.example.hearingtest.users;
 import androidx.annotation.NonNull;
+import lombok.Getter;
+import lombok.Setter;
 
+@Getter
+@Setter
 public class User {
     private int idCounter = 1;
 
@@ -14,64 +18,26 @@ public class User {
     }
 
     public User(String name, Integer age, Boolean sex){
-        this.setNameUser(name);
-        this.setAgeUser(age);
-        this.setSexUser(sex);
-        this.setIdUser(idCounter);
-        this.setIdCounter(true);
+        nameUser = name;
+        ageUser = age;
+        sexUser = sex;
+        idUser = idCounter;
+        setIdCounter(true);
     }
 
     public User(String name, Integer age, Boolean sex, Boolean status){
-        this.setNameUser(name);
-        this.setAgeUser(age);
-        this.setSexUser(sex);
-        this.setIdUser(idCounter);
-        this.setIdCounter(status);
+        nameUser = name;
+        ageUser = age;
+        sexUser = sex;
+        idUser = idCounter;
+        setIdCounter(status);
     }
 
     public User(Integer id, String name, Integer age, Boolean sex){
-        this.setIdUser(id);
-        this.setNameUser(name);
-        this.setAgeUser(age);
-        this.setSexUser(sex);
-    }
-
-    //-----Getters-----
-    public Integer getIdUser(){
-        return idUser;
-    }
-
-    public String getNameUser(){
-        return nameUser;
-    }
-
-    public Integer getAgeUser(){
-        return ageUser;
-    }
-
-    public Boolean getSexUser(){
-        return sexUser;
-    }
-
-    public int getIdCounter() {
-        return idCounter;
-    }
-
-    //-----Setters-----
-    public void setIdUser(Integer id){
-        this.idUser = id;
-    }
-
-    public void setNameUser(String name){
-        this.nameUser = name;
-    }
-
-    public void setAgeUser(Integer age){
-        this.ageUser = age;
-    }
-
-    public void setSexUser(Boolean sex){
-        this.sexUser = sex;
+        idUser = id;
+        nameUser = name;
+        ageUser = age;
+        sexUser = sex;
     }
 
     public void setIdCounter(Boolean status) {

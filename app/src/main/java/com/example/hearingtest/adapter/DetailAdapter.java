@@ -7,14 +7,18 @@ import androidx.viewpager2.adapter.FragmentStateAdapter;
 
 import com.example.hearingtest.audiogram.Audiogram;
 import com.example.hearingtest.fragment.DetailGraphicFragment;
+import lombok.Getter;
+import lombok.Setter;
 
 
+@Getter
+@Setter
 public class DetailAdapter extends FragmentStateAdapter {
 
-    public Audiogram audiogram;
-    public Audiogram median;
-    public int countObject = 2;
-    public Boolean typeNorm = false;
+    private Audiogram audiogram;
+    private Audiogram median;
+    private int countObject = 2;
+    private Boolean typeNorm;
 
     public DetailAdapter(FragmentActivity fragmentActivity, Audiogram audio, Audiogram med, Boolean type) {
         super(fragmentActivity);
@@ -32,9 +36,5 @@ public class DetailAdapter extends FragmentStateAdapter {
     @Override
     public int getItemCount() {
         return countObject;
-    }
-
-    public void setItemCount(int count){
-        this.countObject = count;
     }
 }

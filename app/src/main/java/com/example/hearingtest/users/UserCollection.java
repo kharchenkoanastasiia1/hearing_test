@@ -1,14 +1,17 @@
 package com.example.hearingtest.users;
 
+import lombok.Getter;
+import lombok.Setter;
+
 import java.util.ArrayList;
 import java.util.List;
 
+@Getter
+@Setter
 public class UserCollection {
-    public List<User> users;
+    private List<User> users;
 
     public UserCollection(){
         users = new ArrayList<>();
     }
-
-    public List<User> getUsers(){return users;}
 }

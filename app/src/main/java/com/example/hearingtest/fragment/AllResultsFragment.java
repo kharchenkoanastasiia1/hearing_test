@@ -6,8 +6,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.ProgressBar;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -18,26 +16,24 @@ import androidx.viewpager2.widget.ViewPager2;
 
 import com.example.hearingtest.MainActivity;
 import com.example.hearingtest.R;
-import com.example.hearingtest.adapter.DBAdapter;
+import com.example.hearingtest.db.DBAdapter;
 import com.example.hearingtest.adapter.GraphicAdapter;
 import com.example.hearingtest.audiogram.Audiogram;
 import com.example.hearingtest.dialog.DeleteDialogFragment;
-import com.example.hearingtest.viewmodel.ViewModelPager;
 
 import java.text.ParseException;
 import java.util.List;
 import java.util.Objects;
 
 public class AllResultsFragment extends Fragment {
-    public List<Audiogram> audiograms;
-    public Audiogram median;
-    public Integer idUser;
-    public Button detail;
-    public Button delete;
-    public ViewPager2 pager;
-    public Boolean status = false;
-    public ViewModelPager model;
-    public DBAdapter adapter;
+    private List<Audiogram> audiograms;
+    private Audiogram median;
+    private Integer idUser;
+    private Button detail;
+    private Button delete;
+    private ViewPager2 pager;
+    private Boolean status = false;
+    private DBAdapter adapter;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -55,7 +51,6 @@ public class AllResultsFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        model = new ViewModelProvider(requireActivity()).get(ViewModelPager.class);
         adapter = new DBAdapter(view.getContext());
 
         detail = view.findViewById(R.id.buttonResultFragment);
@@ -92,14 +87,14 @@ public class AllResultsFragment extends Fragment {
     }
 
     public void showDetail(){
-        if(audiograms.size() > 0){
+        if(!audiograms.isEmpty()){
             status = true;
             ((MainActivity) Objects.requireNonNull(getActivity())).returnAllResults(audiograms.get(pager.getCurrentItem()), median);
         }
     }
 
     public void deleteAudiogram(){
-        if(audiograms.size() > 0){
+        if(!audiograms.isEmpty()){
             status = true;
             DeleteDialogFragment dialog = new DeleteDialogFragment();
             Bundle args = new Bundle();

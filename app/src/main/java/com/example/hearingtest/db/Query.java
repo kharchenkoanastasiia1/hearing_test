@@ -71,7 +71,7 @@ public class Query {
     }
 
 
-    public static String createTableMediana(){
+    public static String createTableMedian(){
         return "CREATE TABLE " + DB_TABLE_MEDIANS + " (\n" +
                 MEDIANS_COLUMN_ID + " INTEGER PRIMARY KEY AUTOINCREMENT,\n" +
                 F125_AUDIOGRAM_LEFT + " INTEGER NOT NULL,\n" +
@@ -96,15 +96,16 @@ public class Query {
                 "FOREIGN KEY (" + AUDIOGRAM_COLUMN_ID_USERS + ")\n REFERENCES " + DB_TABLE_USERS + "(" + USERS_COLUMN_ID + "));";
     }
 
-    public static String drobTableUsers(){
+
+    public static String dropTableUsers(){
         return "DROP TABLE IF EXISTS " + DB_TABLE_USERS;
     }
 
-    public static String drobTableAudiograms(){
+    public static String dropTableAudiograms(){
         return "DROP TABLE IF EXISTS " + DB_TABLE_AUDIOGRAMS;
     }
 
-    public static String drobTableMedians(){
+    public static String dropTableMedians(){
         return "DROP TABLE IF EXISTS " + DB_TABLE_MEDIANS;
     }
 

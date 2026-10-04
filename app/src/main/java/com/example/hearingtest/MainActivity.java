@@ -9,7 +9,7 @@ import android.os.Build;
 import android.os.Bundle;
 
 import com.example.hearingtest.audiogram.Audiogram;
-import com.example.hearingtest.adapter.DBAdapter;
+import com.example.hearingtest.db.DBAdapter;
 import com.example.hearingtest.fragment.AllResultsFragment;
 import com.example.hearingtest.fragment.DefinitionNormFragment;
 import com.example.hearingtest.fragment.DetailFragment;
@@ -21,8 +21,9 @@ import com.example.hearingtest.fragment.PreparationTestFragment;
 import com.example.hearingtest.fragment.ResultFragment;
 import com.example.hearingtest.fragment.TestFragment;
 import com.example.hearingtest.fragment.UserFragment;
-import com.example.hearingtest.median.Median;
-import com.example.hearingtest.referencebook.AgeNorm;
+import com.example.hearingtest.norm.Median;
+import com.example.hearingtest.constants.AgeNormConstants;
+import com.example.hearingtest.norm.PopulationNorm;
 import com.example.hearingtest.users.User;
 
 import java.text.ParseException;
@@ -45,7 +46,6 @@ public class MainActivity extends AppCompatActivity  {
     ConnectToServerFragment connectToServerFragment;
     SharedPreferences sPref;
     User user;
-    AgeNorm ageNorm;
     int userId;
     AudioManager audioManager;
     Boolean calculateMedian = false;
@@ -75,8 +75,6 @@ public class MainActivity extends AppCompatActivity  {
             user = db.getUser(userId);
             db.close();
 
-            ageNorm = new AgeNorm(user.getSexUser(), user.getAgeUser());
-
             menuFragment = new MenuFragment(user);
             getSupportFragmentManager().beginTransaction().add(R.id.frameFragment, menuFragment, null).commit();
         }
@@ -100,7 +98,6 @@ public class MainActivity extends AppCompatActivity  {
     public void returnDataUser(User userData){
         getSupportFragmentManager().beginTransaction().remove(userFragment).commit();
         user = userData;
-        ageNorm = new AgeNorm(user.getSexUser(), user.getAgeUser());
         userId = user.getIdUser();
         menuFragment = new MenuFragment(user);
         getSupportFragmentManager().beginTransaction().add(R.id.frameFragment, menuFragment, null).addToBackStack(null).commit();
@@ -169,14 +166,14 @@ public class MainActivity extends AppCompatActivity  {
     //Запуск деталей результатов каждого тестирования при просмотре всех результатов
     public void returnAllResults(Audiogram audiogram, Audiogram median){
         getSupportFragmentManager().beginTransaction().remove(allResultsFragment).commit();
-        detailFragment = new DetailFragment(audiogram, median, ageNorm);
+        detailFragment = new DetailFragment(audiogram, median, PopulationNorm.determinePopulationNorm(user.getSexUser(), user.getAgeUser()));
         getSupportFragmentManager().beginTransaction().add(R.id.frameFragment, detailFragment, null).addToBackStack(null).commit();
     }
 
     //Запуск деталей результатов каждого тестирования после тестирования
     public void returnResultFragment(Audiogram audiogram, Audiogram median){
         getSupportFragmentManager().beginTransaction().remove(resultFragment).commit();
-        detailFragment = new DetailFragment(audiogram, median, ageNorm);
+        detailFragment = new DetailFragment(audiogram, median, PopulationNorm.determinePopulationNorm(user.getSexUser(), user.getAgeUser()));
         getSupportFragmentManager().beginTransaction().add(R.id.frameFragment, detailFragment, null).addToBackStack(null).commit();
     }
 

@@ -1,15 +1,12 @@
-package com.example.hearingtest.adapter;
+package com.example.hearingtest.db;
 
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
-import android.icu.text.DateFormat;
-import android.icu.text.SimpleDateFormat;
 import android.os.Build;
 
 import com.example.hearingtest.audiogram.Audiogram;
-import com.example.hearingtest.db.DBHelper;
 import com.example.hearingtest.users.User;
 import com.example.hearingtest.users.UserCollection;
 
@@ -23,13 +20,9 @@ import java.text.ParseException;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
-import java.util.Locale;
 
 public class DBAdapter {
-
-
     private final Context context;
     private DBHelper mDBHelper;
     private SQLiteDatabase mDB;
@@ -50,12 +43,15 @@ public class DBAdapter {
             mDBHelper.close();
     }
 
+    //=========User=========
+
     //вернуть всех пользователей
     private Cursor getAllEntries(){
         String[] columns = new String[] {USERS_COLUMN_ID, USERS_COLUMN_NAME, USERS_COLUMN_AGE, USERS_COLUMN_SEX};
         return  mDB.query(DB_TABLE_USERS, columns, null, null, null, null, null);
     }
 
+    //заполнение коллекции пользователей
     public UserCollection getUsers(){
         UserCollection usersCollection = new UserCollection();
         Cursor cursor = getAllEntries();
@@ -64,12 +60,13 @@ public class DBAdapter {
             String name = cursor.getString(cursor.getColumnIndexOrThrow(USERS_COLUMN_NAME));
             int age = cursor.getInt(cursor.getColumnIndexOrThrow(USERS_COLUMN_AGE));
             boolean sex = cursor.getInt(cursor.getColumnIndexOrThrow(USERS_COLUMN_SEX)) != 0;
-            usersCollection.users.add(new User(id, name, age, sex));
+            usersCollection.getUsers().add(new User(id, name, age, sex));
         }
         cursor.close();
         return usersCollection;
     }
 
+    //получение пользователя по id
     public User getUser(int id){
         User user = null;
         Cursor cursor = mDB.rawQuery(searchUser(), new String[]{ String.valueOf(id)});
@@ -85,7 +82,7 @@ public class DBAdapter {
 
     public int getIDUser(String nameUser){
         int idUser = -1;
-        Cursor cursor = mDB.rawQuery(searchUserForName(), new String[]{ nameUser});
+        Cursor cursor = mDB.rawQuery(searchUserForName(), new String[]{nameUser});
         if(cursor.moveToFirst()){
             idUser = cursor.getInt(cursor.getColumnIndexOrThrow(USERS_COLUMN_ID));
         }
@@ -116,24 +113,26 @@ public class DBAdapter {
         mDB.delete(DB_TABLE_USERS, whereClause, whereArgs);
     }
 
+    //=========Audiogram=========
+
     public long insertAudiogram(Audiogram audiogram){
         ContentValues cv = new ContentValues();
-        cv.put(F125_AUDIOGRAM_LEFT, audiogram.valueAmplitudeLeft[0]);
-        cv.put(F250_AUDIOGRAM_LEFT, audiogram.valueAmplitudeLeft[1]);
-        cv.put(F500_AUDIOGRAM_LEFT, audiogram.valueAmplitudeLeft[2]);
-        cv.put(F1000_AUDIOGRAM_LEFT, audiogram.valueAmplitudeLeft[3]);
-        cv.put(F2000_AUDIOGRAM_LEFT, audiogram.valueAmplitudeLeft[4]);
-        cv.put(F3000_AUDIOGRAM_LEFT, audiogram.valueAmplitudeLeft[5]);
-        cv.put(F4000_AUDIOGRAM_LEFT, audiogram.valueAmplitudeLeft[6]);
-        cv.put(F8000_AUDIOGRAM_LEFT, audiogram.valueAmplitudeLeft[7]);
-        cv.put(F125_AUDIOGRAM_RIGHT, audiogram.valueAmplitudeRight[0]);
-        cv.put(F250_AUDIOGRAM_RIGHT, audiogram.valueAmplitudeRight[1]);
-        cv.put(F500_AUDIOGRAM_RIGHT, audiogram.valueAmplitudeRight[2]);
-        cv.put(F1000_AUDIOGRAM_RIGHT, audiogram.valueAmplitudeRight[3]);
-        cv.put(F2000_AUDIOGRAM_RIGHT, audiogram.valueAmplitudeRight[4]);
-        cv.put(F3000_AUDIOGRAM_RIGHT, audiogram.valueAmplitudeRight[5]);
-        cv.put(F4000_AUDIOGRAM_RIGHT, audiogram.valueAmplitudeRight[6]);
-        cv.put(F8000_AUDIOGRAM_RIGHT, audiogram.valueAmplitudeRight[7]);
+        cv.put(F125_AUDIOGRAM_LEFT, audiogram.getValueAmplitudeLeft()[0]);
+        cv.put(F250_AUDIOGRAM_LEFT, audiogram.getValueAmplitudeLeft()[1]);
+        cv.put(F500_AUDIOGRAM_LEFT, audiogram.getValueAmplitudeLeft()[2]);
+        cv.put(F1000_AUDIOGRAM_LEFT, audiogram.getValueAmplitudeLeft()[3]);
+        cv.put(F2000_AUDIOGRAM_LEFT, audiogram.getValueAmplitudeLeft()[4]);
+        cv.put(F3000_AUDIOGRAM_LEFT, audiogram.getValueAmplitudeLeft()[5]);
+        cv.put(F4000_AUDIOGRAM_LEFT, audiogram.getValueAmplitudeLeft()[6]);
+        cv.put(F8000_AUDIOGRAM_LEFT, audiogram.getValueAmplitudeLeft()[7]);
+        cv.put(F125_AUDIOGRAM_RIGHT, audiogram.getValueAmplitudeRight()[0]);
+        cv.put(F250_AUDIOGRAM_RIGHT, audiogram.getValueAmplitudeRight()[1]);
+        cv.put(F500_AUDIOGRAM_RIGHT, audiogram.getValueAmplitudeRight()[2]);
+        cv.put(F1000_AUDIOGRAM_RIGHT, audiogram.getValueAmplitudeRight()[3]);
+        cv.put(F2000_AUDIOGRAM_RIGHT, audiogram.getValueAmplitudeRight()[4]);
+        cv.put(F3000_AUDIOGRAM_RIGHT, audiogram.getValueAmplitudeRight()[5]);
+        cv.put(F4000_AUDIOGRAM_RIGHT, audiogram.getValueAmplitudeRight()[6]);
+        cv.put(F8000_AUDIOGRAM_RIGHT, audiogram.getValueAmplitudeRight()[7]);
         cv.put(AUDIOGRAM_COLUMN_ID_USERS , audiogram.getIdUser());
         return mDB.insertOrThrow(DB_TABLE_AUDIOGRAMS, null, cv);
     }
@@ -153,76 +152,6 @@ public class DBAdapter {
         String whereClause = AUDIOGRAM_LEFT_COLUMN_ID + " = ?";
         String[] whereArgs = new String[]{String.valueOf(audioId)};
         mDB.delete(DB_TABLE_AUDIOGRAMS, whereClause, whereArgs);
-    }
-
-    //Получение данных аудиограммы по id пользователя и номера строки
-    @RequiresApi(api = Build.VERSION_CODES.O)
-    public Audiogram getRowAudiogram(int id, int numberRow){
-        Audiogram audiogram = null;
-        Cursor cursor = mDB.rawQuery(getNumberRowAudiograms(), new String[]{ String.valueOf(id), String.valueOf(numberRow)});
-        if(cursor.moveToFirst()){
-            Integer[] left = new Integer[8];
-            Integer[] right = new Integer[8];
-            int idAudio = cursor.getInt(cursor.getColumnIndexOrThrow(AUDIOGRAM_LEFT_COLUMN_ID));
-            left[0] = cursor.getInt(cursor.getColumnIndexOrThrow(F125_AUDIOGRAM_LEFT));
-            left[1] = cursor.getInt(cursor.getColumnIndexOrThrow(F250_AUDIOGRAM_LEFT));
-            left[2] = cursor.getInt(cursor.getColumnIndexOrThrow(F500_AUDIOGRAM_LEFT));
-            left[3] = cursor.getInt(cursor.getColumnIndexOrThrow(F1000_AUDIOGRAM_LEFT));
-            left[4] = cursor.getInt(cursor.getColumnIndexOrThrow(F2000_AUDIOGRAM_LEFT));
-            left[5] = cursor.getInt(cursor.getColumnIndexOrThrow(F3000_AUDIOGRAM_LEFT));
-            left[6] = cursor.getInt(cursor.getColumnIndexOrThrow(F4000_AUDIOGRAM_LEFT));
-            left[7] = cursor.getInt(cursor.getColumnIndexOrThrow(F8000_AUDIOGRAM_LEFT));
-            right[0] = cursor.getInt(cursor.getColumnIndexOrThrow(F125_AUDIOGRAM_RIGHT));
-            right[1] = cursor.getInt(cursor.getColumnIndexOrThrow(F250_AUDIOGRAM_RIGHT));
-            right[2] = cursor.getInt(cursor.getColumnIndexOrThrow(F500_AUDIOGRAM_RIGHT));
-            right[3] = cursor.getInt(cursor.getColumnIndexOrThrow(F1000_AUDIOGRAM_RIGHT));
-            right[4] = cursor.getInt(cursor.getColumnIndexOrThrow(F2000_AUDIOGRAM_RIGHT));
-            right[5] = cursor.getInt(cursor.getColumnIndexOrThrow(F3000_AUDIOGRAM_RIGHT));
-            right[6] = cursor.getInt(cursor.getColumnIndexOrThrow(F4000_AUDIOGRAM_RIGHT));
-            right[7] = cursor.getInt(cursor.getColumnIndexOrThrow(F8000_AUDIOGRAM_RIGHT));
-            String dateString = cursor.getString(cursor.getColumnIndexOrThrow(DATE_AUDIOGRAM));
-            LocalDate date = LocalDate.parse(dateString, DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
-            int idUser = cursor.getInt(cursor.getColumnIndexOrThrow(AUDIOGRAM_COLUMN_ID_USERS));
-
-            audiogram = new Audiogram(idAudio, left, right, date, idUser);
-        }
-        cursor.close();
-        return audiogram;
-    }
-
-
-    @RequiresApi(api = Build.VERSION_CODES.O)
-    public List<Audiogram> getAudiograms(int id, int countRow){
-        List<Audiogram> audiograms = new ArrayList<>();
-        Cursor cursor = mDB.rawQuery(getCountAudiograms(), new String[]{ String.valueOf(id), String.valueOf(countRow)});
-        while (cursor.moveToNext()){
-            Integer[] left = new Integer[8];
-            Integer[] right = new Integer[8];
-            int idAudio = cursor.getInt(cursor.getColumnIndexOrThrow(AUDIOGRAM_LEFT_COLUMN_ID));
-            left[0] = cursor.getInt(cursor.getColumnIndexOrThrow(F125_AUDIOGRAM_LEFT));
-            left[1] = cursor.getInt(cursor.getColumnIndexOrThrow(F250_AUDIOGRAM_LEFT));
-            left[2] = cursor.getInt(cursor.getColumnIndexOrThrow(F500_AUDIOGRAM_LEFT));
-            left[3] = cursor.getInt(cursor.getColumnIndexOrThrow(F1000_AUDIOGRAM_LEFT));
-            left[4] = cursor.getInt(cursor.getColumnIndexOrThrow(F2000_AUDIOGRAM_LEFT));
-            left[5] = cursor.getInt(cursor.getColumnIndexOrThrow(F3000_AUDIOGRAM_LEFT));
-            left[6] = cursor.getInt(cursor.getColumnIndexOrThrow(F4000_AUDIOGRAM_LEFT));
-            left[7] = cursor.getInt(cursor.getColumnIndexOrThrow(F8000_AUDIOGRAM_LEFT));
-            right[0] = cursor.getInt(cursor.getColumnIndexOrThrow(F125_AUDIOGRAM_RIGHT));
-            right[1] = cursor.getInt(cursor.getColumnIndexOrThrow(F250_AUDIOGRAM_RIGHT));
-            right[2] = cursor.getInt(cursor.getColumnIndexOrThrow(F500_AUDIOGRAM_RIGHT));
-            right[3] = cursor.getInt(cursor.getColumnIndexOrThrow(F1000_AUDIOGRAM_RIGHT));
-            right[4] = cursor.getInt(cursor.getColumnIndexOrThrow(F2000_AUDIOGRAM_RIGHT));
-            right[5] = cursor.getInt(cursor.getColumnIndexOrThrow(F3000_AUDIOGRAM_RIGHT));
-            right[6] = cursor.getInt(cursor.getColumnIndexOrThrow(F4000_AUDIOGRAM_RIGHT));
-            right[7] = cursor.getInt(cursor.getColumnIndexOrThrow(F8000_AUDIOGRAM_RIGHT));
-            String dateString = cursor.getString(cursor.getColumnIndexOrThrow(DATE_AUDIOGRAM));
-            LocalDate date = LocalDate.parse(dateString, DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
-            int idUser = cursor.getInt(cursor.getColumnIndexOrThrow(AUDIOGRAM_COLUMN_ID_USERS));
-
-            audiograms.add(new Audiogram(idAudio, left, right, date, idUser));
-        }
-        cursor.close();
-        return audiograms;
     }
 
     @RequiresApi(api = Build.VERSION_CODES.O)
@@ -261,24 +190,25 @@ public class DBAdapter {
         return audiograms;
     }
 
+    //=========Median=========
     public void insertMedian(Audiogram audiogram){
         ContentValues cv = new ContentValues();
-        cv.put(F125_AUDIOGRAM_LEFT, audiogram.valueAmplitudeLeft[0]);
-        cv.put(F250_AUDIOGRAM_LEFT, audiogram.valueAmplitudeLeft[1]);
-        cv.put(F500_AUDIOGRAM_LEFT, audiogram.valueAmplitudeLeft[2]);
-        cv.put(F1000_AUDIOGRAM_LEFT, audiogram.valueAmplitudeLeft[3]);
-        cv.put(F2000_AUDIOGRAM_LEFT, audiogram.valueAmplitudeLeft[4]);
-        cv.put(F3000_AUDIOGRAM_LEFT, audiogram.valueAmplitudeLeft[5]);
-        cv.put(F4000_AUDIOGRAM_LEFT, audiogram.valueAmplitudeLeft[6]);
-        cv.put(F8000_AUDIOGRAM_LEFT, audiogram.valueAmplitudeLeft[7]);
-        cv.put(F125_AUDIOGRAM_RIGHT, audiogram.valueAmplitudeRight[0]);
-        cv.put(F250_AUDIOGRAM_RIGHT, audiogram.valueAmplitudeRight[1]);
-        cv.put(F500_AUDIOGRAM_RIGHT, audiogram.valueAmplitudeRight[2]);
-        cv.put(F1000_AUDIOGRAM_RIGHT, audiogram.valueAmplitudeRight[3]);
-        cv.put(F2000_AUDIOGRAM_RIGHT, audiogram.valueAmplitudeRight[4]);
-        cv.put(F3000_AUDIOGRAM_RIGHT, audiogram.valueAmplitudeRight[5]);
-        cv.put(F4000_AUDIOGRAM_RIGHT, audiogram.valueAmplitudeRight[6]);
-        cv.put(F8000_AUDIOGRAM_RIGHT, audiogram.valueAmplitudeRight[7]);
+        cv.put(F125_AUDIOGRAM_LEFT, audiogram.getValueAmplitudeLeft()[0]);
+        cv.put(F250_AUDIOGRAM_LEFT, audiogram.getValueAmplitudeLeft()[1]);
+        cv.put(F500_AUDIOGRAM_LEFT, audiogram.getValueAmplitudeLeft()[2]);
+        cv.put(F1000_AUDIOGRAM_LEFT, audiogram.getValueAmplitudeLeft()[3]);
+        cv.put(F2000_AUDIOGRAM_LEFT, audiogram.getValueAmplitudeLeft()[4]);
+        cv.put(F3000_AUDIOGRAM_LEFT, audiogram.getValueAmplitudeLeft()[5]);
+        cv.put(F4000_AUDIOGRAM_LEFT, audiogram.getValueAmplitudeLeft()[6]);
+        cv.put(F8000_AUDIOGRAM_LEFT, audiogram.getValueAmplitudeLeft()[7]);
+        cv.put(F125_AUDIOGRAM_RIGHT, audiogram.getValueAmplitudeRight()[0]);
+        cv.put(F250_AUDIOGRAM_RIGHT, audiogram.getValueAmplitudeRight()[1]);
+        cv.put(F500_AUDIOGRAM_RIGHT, audiogram.getValueAmplitudeRight()[2]);
+        cv.put(F1000_AUDIOGRAM_RIGHT, audiogram.getValueAmplitudeRight()[3]);
+        cv.put(F2000_AUDIOGRAM_RIGHT, audiogram.getValueAmplitudeRight()[4]);
+        cv.put(F3000_AUDIOGRAM_RIGHT, audiogram.getValueAmplitudeRight()[5]);
+        cv.put(F4000_AUDIOGRAM_RIGHT, audiogram.getValueAmplitudeRight()[6]);
+        cv.put(F8000_AUDIOGRAM_RIGHT, audiogram.getValueAmplitudeRight()[7]);
         cv.put(AUDIOGRAM_COLUMN_ID_USERS , audiogram.getIdUser());
         mDB.insertOrThrow(DB_TABLE_MEDIANS, null, cv);
     }

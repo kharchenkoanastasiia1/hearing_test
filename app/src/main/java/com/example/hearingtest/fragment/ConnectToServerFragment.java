@@ -1,11 +1,11 @@
 package com.example.hearingtest.fragment;
 
+import android.annotation.SuppressLint;
 import android.os.Build;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.webkit.ValueCallback;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
@@ -19,22 +19,18 @@ import androidx.lifecycle.MutableLiveData;
 
 import com.example.hearingtest.MainActivity;
 import com.example.hearingtest.R;
-import com.example.hearingtest.adapter.DBAdapter;
+import com.example.hearingtest.db.DBAdapter;
 import com.example.hearingtest.audiogram.Audiogram;
-import com.example.hearingtest.audiogram.AudiogramCollection;
-import com.example.hearingtest.audiogram.AudiogramForServer;
+import com.example.hearingtest.audiogram.SyncOfflineAudiogramsUseCase;
+import com.example.hearingtest.audiogram.AudiogramForRemoteDB;
 import com.example.hearingtest.server.JavaScriptInterface;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-import java.text.DateFormat;
 import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.Date;
 import java.util.List;
-import java.util.Map;
 import java.util.Objects;
 
 public class ConnectToServerFragment extends Fragment {
@@ -42,21 +38,19 @@ public class ConnectToServerFragment extends Fragment {
     private MutableLiveData<Date> lastDateMedian = new MutableLiveData<>(null);
     private MutableLiveData<String> usernameServer = new MutableLiveData<>(null);
     private MutableLiveData<Boolean> statusResponse = new MutableLiveData<>(false);
-    public Button btnDisconnect;
-    public WebView webView;
-    public List<Audiogram> audiograms;
-    public List<AudiogramForServer> audiogramForServers;
-    public Audiogram median;
-    public AudiogramForServer medianForServer;
-    public JavaScriptInterface javaScriptInterface;
-    public Integer idUser;
-    public DBAdapter adapter;
+    private WebView webView;
+    private List<Audiogram> audiograms;
+    private List<AudiogramForRemoteDB> audiogramForRemoteDBS;
+    private Audiogram median;
+    private AudiogramForRemoteDB medianForServer;
+    private JavaScriptInterface javaScriptInterface;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         return inflater.inflate(R.layout.connect_to_server_fragment, container, false);
     }
 
+    @SuppressLint({"JavascriptInterface", "SetJavaScriptEnabled"})
     @RequiresApi(api = Build.VERSION_CODES.O)
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
@@ -66,8 +60,9 @@ public class ConnectToServerFragment extends Fragment {
 
         connectToDatabase(view);
 
-        btnDisconnect = view.findViewById(R.id.buttonDisconnect);
+        Button btnDisconnect = view.findViewById(R.id.buttonDisconnect);
         webView = view.findViewById(R.id.webView);
+        //TODO: URL
         webView.loadUrl("http://192.168.1.101:8080/hearing_monitoring/login");
         WebSettings webSettings = webView.getSettings();
         webSettings.setJavaScriptEnabled(true);
@@ -95,8 +90,8 @@ public class ConnectToServerFragment extends Fragment {
 
     @RequiresApi(api = Build.VERSION_CODES.O)
     public void connectToDatabase(View view){
-        adapter = new DBAdapter(view.getContext());
-        idUser = ((MainActivity) Objects.requireNonNull(getActivity())).getUserIdForMain();
+        DBAdapter adapter = new DBAdapter(view.getContext());
+        int idUser = ((MainActivity) Objects.requireNonNull(getActivity())).getUserIdForMain();
         adapter.open();
         try {
             audiograms = adapter.getAudiograms(idUser);
@@ -109,15 +104,15 @@ public class ConnectToServerFragment extends Fragment {
 
     @RequiresApi(api = Build.VERSION_CODES.O)
     public void transformationAudiogram() throws ParseException, JsonProcessingException {
-        List<Audiogram> newList = AudiogramCollection.selectAudiogramCollection(audiograms, lastDateAudiogram.getValue());
+        List<Audiogram> newList = SyncOfflineAudiogramsUseCase.selectAudiogramCollection(audiograms, lastDateAudiogram.getValue());
         if(newList != null){
-            audiogramForServers = new ArrayList<>();
+            audiogramForRemoteDBS = new ArrayList<>();
             for(Audiogram audio : newList){
-                audiogramForServers.add(new AudiogramForServer(audio, usernameServer.getValue()));
+                audiogramForRemoteDBS.add(new AudiogramForRemoteDB(audio, usernameServer.getValue()));
             }
         }
-        if(median != null && AudiogramCollection.selectMedian(median, lastDateMedian.getValue()) != null){
-            medianForServer = new AudiogramForServer(median, usernameServer.getValue());
+        if(median != null && SyncOfflineAudiogramsUseCase.selectMedian(median, lastDateMedian.getValue()) != null){
+            medianForServer = new AudiogramForRemoteDB(median, usernameServer.getValue());
         }
     }
 
@@ -145,12 +140,12 @@ public class ConnectToServerFragment extends Fragment {
                 try {
                     transformationAudiogram();
                     statusResponse.postValue(true);
-                    if(audiogramForServers != null){
+                    if(audiogramForRemoteDBS != null){
                         webView.post(() -> {
                             ObjectMapper objectMapper = new ObjectMapper();
                             String str= null;
                             try {
-                                str = objectMapper.writeValueAsString(audiogramForServers);
+                                str = objectMapper.writeValueAsString(audiogramForRemoteDBS);
                             } catch (JsonProcessingException e) {
                                 e.printStackTrace();
                             }

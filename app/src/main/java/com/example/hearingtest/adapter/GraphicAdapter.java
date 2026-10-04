@@ -7,15 +7,17 @@ import androidx.viewpager2.adapter.FragmentStateAdapter;
 
 import com.example.hearingtest.audiogram.Audiogram;
 import com.example.hearingtest.fragment.GraphicFragment;
+import lombok.Getter;
+import lombok.Setter;
 
 import java.util.List;
 
 public class GraphicAdapter extends FragmentStateAdapter {
-
-
-    public List<Audiogram> audiogram;
-    public int countObject = 10;
-    public int idUser = 0;
+    private final List<Audiogram> audiogram;
+    private int countObject = 10;
+    @Getter
+    @Setter
+    private int idUser = 0;
 
     public GraphicAdapter(FragmentActivity fragmentActivity, List<Audiogram> audio) {
         super(fragmentActivity);
@@ -35,9 +37,5 @@ public class GraphicAdapter extends FragmentStateAdapter {
 
     public void setItemCount(int count){
         this.countObject = count;
-    }
-
-    public void setIdUser(int id){
-        this.idUser = id;
     }
 }

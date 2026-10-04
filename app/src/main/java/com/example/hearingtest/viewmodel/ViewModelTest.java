@@ -6,11 +6,13 @@ import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 import com.example.hearingtest.audiogram.Audiogram;
 import com.example.hearingtest.tone.GenerationTone;
+import lombok.Getter;
 
 public class ViewModelTest extends ViewModel {
 
-    public Integer minVolume = -10;
-    public Integer maxVolume = 100;
+    private Integer minVolume = -10;
+    @Getter
+    private Integer maxVolume = 100;
 
     public GenerationTone generationTone;
     public Audiogram audiogram;
@@ -92,26 +94,26 @@ public class ViewModelTest extends ViewModel {
                                 valueSoundLevelLeft.postValue(i);
                                 track = generationTone.generateTone();
                                 track.play();
-                                if(!status.getValue()){
+                                if(Boolean.FALSE.equals(status.getValue())){
                                     generationTone.clearMemory(track);
                                     status.postValue(true);
                                     break;
                                 }
-                                if(emergencyExit.getValue()){
+                                if(Boolean.TRUE.equals(emergencyExit.getValue())){
                                     generationTone.clearMemory(track);
                                     return;
                                 }
-                                Thread.sleep(generationTone.getCountMiliseconds());
+                                Thread.sleep(generationTone.getCountMilliseconds());
                                 generationTone.clearMemory(track);
                             } catch (InterruptedException e) {
                                     e.printStackTrace();
                             }
                         }
-                        audiogram.valueAmplitudeLeft[j] = valueSoundLevelLeft.getValue();
+                        audiogram.getValueAmplitudeLeft()[j] = valueSoundLevelLeft.getValue();
                         valueSoundLevelLeft.postValue(minVolume);
 
                         try {
-                            Thread.sleep(generationTone.getCountMiliseconds());
+                            Thread.sleep(generationTone.getCountMilliseconds());
                         } catch (InterruptedException e) {
                             e.printStackTrace();
                         }
@@ -125,22 +127,22 @@ public class ViewModelTest extends ViewModel {
                                 valueSoundLevelRight.postValue(i);
                                 track = generationTone.generateTone();
                                 track.play();
-                                if(!status.getValue()){
+                                if(Boolean.FALSE.equals(status.getValue())){
                                     generationTone.clearMemory(track);
                                     status.postValue(true);
                                     break;
                                 }
-                                if(emergencyExit.getValue()){
+                                if(Boolean.TRUE.equals(emergencyExit.getValue())){
                                     generationTone.clearMemory(track);
                                     return;
                                 }
-                                Thread.sleep(generationTone.getCountMiliseconds());
+                                Thread.sleep(generationTone.getCountMilliseconds());
                                 generationTone.clearMemory(track);
                             } catch (InterruptedException e) {
                                 e.printStackTrace();
                             }
                         }
-                        audiogram.valueAmplitudeRight[j] = valueSoundLevelRight.getValue();
+                        audiogram.getValueAmplitudeRight()[j] = valueSoundLevelRight.getValue();
                         valueSoundLevelRight.postValue(minVolume);
                     }
                     isEnd.postValue(true);

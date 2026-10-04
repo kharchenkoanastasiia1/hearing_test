@@ -10,12 +10,12 @@ import com.example.hearingtest.audiogram.Audiogram;
 import com.example.hearingtest.tone.GenerationTone;
 
 public class ViewModelTestAdvanced extends ViewModel {
-    public Integer minVolume = 0;
-    public Integer maxVolume = 100;
+    private Integer minVolume = 0;
+    private Integer maxVolume = 100;
 
-    public GenerationTone generationTone;
-    public Audiogram audiogram;
-    public AudioTrack track;
+    private GenerationTone generationTone;
+    private Audiogram audiogram;
+    private AudioTrack track;
 
     private MutableLiveData<Boolean> isStarted = new MutableLiveData<>(false);
     private MutableLiveData<Boolean> statusHear = new MutableLiveData<>(false);
@@ -89,7 +89,7 @@ public class ViewModelTestAdvanced extends ViewModel {
                     for(int j = valueFrequencyLeft.getValue(); j < Audiogram.valueFrequency.length; j++){
                         generationTone.setStereoChannel(false);
                         generationTone.setBaseFrequency(Audiogram.valueFrequency[j]);
-                        generationTone.setCountMiliseconds(300000);
+                        generationTone.setCountMilliseconds(300000);
                         valueFrequencyLeft.postValue(j);
 
                         //Left:
@@ -101,18 +101,18 @@ public class ViewModelTestAdvanced extends ViewModel {
                                 track = generationTone.generateTone();
                                 track.play();
 
-                                if(!statusNotHear.getValue()){
+                                if(Boolean.FALSE.equals(statusNotHear.getValue())){
                                     generationTone.clearMemory(track);
                                     statusNotHear.postValue(true);
                                     i += 1;
                                     continue;
                                 }
-                                if(!statusHear.getValue()){
+                                if(Boolean.FALSE.equals(statusHear.getValue())){
                                     generationTone.clearMemory(track);
                                     statusHear.postValue(true);
                                     break;
                                 }
-                                if(emergencyExit.getValue()){
+                                if(Boolean.TRUE.equals(emergencyExit.getValue())){
                                     generationTone.clearMemory(track);
                                     return;
                                 }
@@ -122,7 +122,7 @@ public class ViewModelTestAdvanced extends ViewModel {
                                 e.printStackTrace();
                             }
                         }
-                        audiogram.valueAmplitudeLeft[j] = valueSoundLevelLeft.getValue();
+                        audiogram.getValueAmplitudeLeft()[j] = valueSoundLevelLeft.getValue();
                         valueSoundLevelLeft.postValue(minVolume);
 
                         try {
@@ -142,18 +142,18 @@ public class ViewModelTestAdvanced extends ViewModel {
                                 track = generationTone.generateTone();
                                 track.play();
 
-                                if(!statusNotHear.getValue()){
+                                if(Boolean.FALSE.equals(statusNotHear.getValue())){
                                     generationTone.clearMemory(track);
                                     statusNotHear.postValue(true);
                                     i += 1;
                                     continue;
                                 }
-                                if(!statusHear.getValue()){
+                                if(Boolean.FALSE.equals(statusHear.getValue())){
                                     generationTone.clearMemory(track);
                                     statusHear.postValue(true);
                                     break;
                                 }
-                                if(emergencyExit.getValue()){
+                                if(Boolean.TRUE.equals(emergencyExit.getValue())){
                                     generationTone.clearMemory(track);
                                     return;
                                 }
@@ -163,7 +163,7 @@ public class ViewModelTestAdvanced extends ViewModel {
                                 e.printStackTrace();
                             }
                         }
-                        audiogram.valueAmplitudeRight[j] = valueSoundLevelRight.getValue();
+                        audiogram.getValueAmplitudeRight()[j] = valueSoundLevelRight.getValue();
                         valueSoundLevelRight.postValue(minVolume);
                     }
                     isEnd.postValue(true);

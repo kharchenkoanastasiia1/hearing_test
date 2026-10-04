@@ -3,17 +3,21 @@ package com.example.hearingtest.tone;
 import android.media.AudioFormat;
 import android.media.AudioManager;
 import android.media.AudioTrack;
+import lombok.Getter;
+import lombok.Setter;
 
+@Getter
+@Setter
 public class GenerationTone {
     private Integer baseFrequency = 441;
-    private Integer countMiliseconds = 1000;
+    private Integer countMilliseconds = 1000;
     private Integer volume = 20;
     private Integer samplingFrequency = 44100;
     private Boolean stereoChannel = true;              //true - left, false - right
 
-    public GenerationTone(int baseFrequen, int countMilisec, int vol, boolean stCh) {
+    public GenerationTone(int baseFrequen, int countMillisec, int vol, boolean stCh) {
         this.baseFrequency = baseFrequen;
-        this.countMiliseconds = countMilisec;
+        this.countMilliseconds = countMillisec;
         this.volume = vol;
         this.stereoChannel = stCh;
     }
@@ -21,7 +25,7 @@ public class GenerationTone {
     public GenerationTone(){}
 
     public AudioTrack generateTone() {
-        int count = (int)(countMiliseconds * samplingFrequency) / 1000;// & ~1;
+        int count = (int)(countMilliseconds * samplingFrequency) / 1000;// & ~1;
         count = count * 2;
         short[] buf = new short[count];
         AudioTrack track = new AudioTrack(AudioManager.STREAM_MUSIC, samplingFrequency,
@@ -47,29 +51,10 @@ public class GenerationTone {
     public void clearMemory(AudioTrack track) {
         try {
             track.pause();
-        } catch (IllegalStateException e)
-        {}
+        } catch (IllegalStateException e) {
+            throw new IllegalStateException(e.getMessage());
+        }
         track.flush();
         track.release();
-    }
-
-    public void setBaseFrequency(Integer base){
-        this.baseFrequency = base;
-    }
-
-    public void setCountMiliseconds(Integer base){
-        this.countMiliseconds = base;
-    }
-
-    public void setVolume(Integer base){
-        this.volume = base;
-    }
-
-    public void setStereoChannel(Boolean base){
-        this.stereoChannel = base;
-    }
-
-    public Integer getCountMiliseconds(){
-        return countMiliseconds;
     }
 }

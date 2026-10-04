@@ -1,6 +1,6 @@
-package com.example.hearingtest.referencebook;
+package com.example.hearingtest.constants;
 
-public class Constants {
+public class ConstantsUkr {
     public static final String choiseAction = "Виберіть потрібну дію, ";
     public static final String choiseUser = "Виберіть користувача";
     public static final String onHeadset = "Підключіть гарнітуру";

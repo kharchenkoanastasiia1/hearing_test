@@ -1,11 +1,11 @@
 package com.example.hearingtest.fragment;
 
-import static com.example.hearingtest.referencebook.Constants.fillAllFields;
-import static com.example.hearingtest.referencebook.Constants.nicknameUnique;
+import static com.example.hearingtest.constants.Constants.fillAllFields;
+import static com.example.hearingtest.constants.Constants.nicknameUnique;
 
 import com.example.hearingtest.MainActivity;
 import com.example.hearingtest.R;
-import com.example.hearingtest.adapter.DBAdapter;
+import com.example.hearingtest.db.DBAdapter;
 import com.example.hearingtest.users.User;
 
 import android.content.SharedPreferences;

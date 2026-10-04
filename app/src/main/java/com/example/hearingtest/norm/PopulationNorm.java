@@ -1,19 +1,12 @@
-package com.example.hearingtest.referencebook;
+package com.example.hearingtest.norm;
 
 import com.example.hearingtest.audiogram.Audiogram;
 
-public class AgeNorm {
-    public static Integer[] Male_20_29 = new Integer[]{5, 5, 5, 5, 10, 10, 10, 8};
-    public static Integer[] Male_30_39 = new Integer[]{5, 5, 5, 7, 7, 13, 15, 17};
-    public static Integer[] Male_40_49 = new Integer[]{10, 10, 10, 9, 14, 31, 28, 33};
-    public static Integer[] Male_50_59 = new Integer[]{10, 10, 15, 16, 27, 41, 42, 45};
-    public static Integer[] Female_20_29 = new Integer[]{5, 5, 5, 5, 5, 5, 6, 5};
-    public static Integer[] Female_30_39 = new Integer[]{5, 5, 5, 8, 9, 13, 13, 15};
-    public static Integer[] Female_40_49 = new Integer[]{5, 10, 5, 10, 11, 25, 25, 23};
-    public static Integer[] Female_50_59 = new Integer[]{10, 10, 15, 18, 20, 30, 31, 37};
-    public Audiogram audiogram;
+import static com.example.hearingtest.constants.AgeNormConstants.*;
 
-    public AgeNorm(Boolean sex, Integer age){
+public class PopulationNorm {
+    public static Audiogram determinePopulationNorm(Boolean sex, Integer age){
+        Audiogram audiogram;
         if(sex){
             if(age <= 29){
                 audiogram = new Audiogram(Female_20_29, Female_20_29);
@@ -35,5 +28,6 @@ public class AgeNorm {
                 audiogram = new Audiogram(Male_50_59, Male_50_59);
             }
         }
+        return audiogram;
     }
 }

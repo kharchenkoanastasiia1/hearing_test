@@ -18,7 +18,8 @@ import com.example.hearingtest.MainActivity;
 import com.example.hearingtest.R;
 import com.example.hearingtest.adapter.DetailAdapter;
 import com.example.hearingtest.audiogram.Audiogram;
-import com.example.hearingtest.referencebook.AgeNorm;
+import com.example.hearingtest.constants.AgeNormConstants;
+import com.example.hearingtest.norm.PopulationNorm;
 
 import java.util.Objects;
 
@@ -28,12 +29,12 @@ public class DetailFragment extends Fragment {
     public Audiogram median;
     public Button personNorm;
     public Button populNorm;
-    public AgeNorm ageNorm;
+    public Audiogram populationNorm;
 
-    public DetailFragment(Audiogram audiog, Audiogram med, AgeNorm age){
+    public DetailFragment(Audiogram audiog, Audiogram med, Audiogram ageNorm){
         audiogram = audiog;
         median = med;
-        ageNorm = age;
+        populationNorm = ageNorm;
     }
 
     @Override
@@ -57,10 +58,10 @@ public class DetailFragment extends Fragment {
 
         personNorm.setEnabled(false);
 
-        choiseNorm(view, ageNorm.audiogram, false);
+        choiseNorm(view, populationNorm, false);
 
         personNorm.setOnClickListener(v -> choiseNorm(view, median, true));
-        populNorm.setOnClickListener(v -> choiseNorm(view, ageNorm.audiogram, false));
+        populNorm.setOnClickListener(v -> choiseNorm(view, populationNorm, false));
     }
 
     public void choiseNorm(View view, Audiogram audio, Boolean type){

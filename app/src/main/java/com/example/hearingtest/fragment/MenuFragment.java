@@ -1,6 +1,6 @@
 package com.example.hearingtest.fragment;
 
-import static com.example.hearingtest.referencebook.Constants.choiseAction;
+import static com.example.hearingtest.constants.Constants.choiseAction;
 
 import android.os.Build;
 import android.os.Bundle;

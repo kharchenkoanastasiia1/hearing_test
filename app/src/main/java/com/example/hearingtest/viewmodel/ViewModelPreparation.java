@@ -3,23 +3,13 @@ package com.example.hearingtest.viewmodel;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
+import lombok.Getter;
 
+@Getter
 public class ViewModelPreparation extends ViewModel {
     private MutableLiveData<Boolean> isStarted = new MutableLiveData<>(false);
     private MutableLiveData<Boolean> allowStartVolume = new MutableLiveData<>(false);
     private MutableLiveData<Boolean> allowStartHeadphones = new MutableLiveData<>(false);
-
-    public LiveData<Boolean> getIsStarted() {
-        return isStarted;
-    }
-
-    public LiveData<Boolean> getAllowStartVolume() {
-        return allowStartVolume;
-    }
-
-    public LiveData<Boolean> getAllowStartHeadphones() {
-        return allowStartHeadphones;
-    }
 
     public void setIsStarted(Boolean end) {
         isStarted.postValue(end);

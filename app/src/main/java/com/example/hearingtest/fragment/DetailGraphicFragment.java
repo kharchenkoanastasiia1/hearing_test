@@ -1,11 +1,11 @@
 package com.example.hearingtest.fragment;
 
-import static com.example.hearingtest.referencebook.Constants.frequency;
-import static com.example.hearingtest.referencebook.Constants.hearingLevel;
-import static com.example.hearingtest.referencebook.Constants.leftEar;
-import static com.example.hearingtest.referencebook.Constants.measurement;
-import static com.example.hearingtest.referencebook.Constants.norm;
-import static com.example.hearingtest.referencebook.Constants.rightEar;
+import static com.example.hearingtest.constants.Constants.frequency;
+import static com.example.hearingtest.constants.Constants.hearingLevel;
+import static com.example.hearingtest.constants.Constants.leftEar;
+import static com.example.hearingtest.constants.Constants.measurement;
+import static com.example.hearingtest.constants.Constants.norm;
+import static com.example.hearingtest.constants.Constants.rightEar;
 
 import android.os.Build;
 import android.os.Bundle;
@@ -26,7 +26,7 @@ import com.androidplot.xy.XYGraphWidget;
 import com.androidplot.xy.XYPlot;
 import com.androidplot.xy.XYSeries;
 import com.example.hearingtest.R;
-import com.example.hearingtest.analize.AnalizeAudiogram;
+import com.example.hearingtest.analize.AnalyzeAudiogram;
 import com.example.hearingtest.audiogram.Audiogram;
 
 import java.text.FieldPosition;
@@ -81,16 +81,16 @@ public class DetailGraphicFragment extends Fragment {
         assert median != null;
 
         // Данные для построения графика:
-        Number[] domainLabels = audiogram.valueFrequency;
+        Number[] domainLabels = Audiogram.valueFrequency;
         Number[] series1Numbers;
         Number[] series2Numbers;
         if(ear == 0){
-            series1Numbers = audiogram.valueAmplitudeLeft;
-            series2Numbers = median.valueAmplitudeLeft;
+            series1Numbers = audiogram.getValueAmplitudeLeft();
+            series2Numbers = median.getValueAmplitudeLeft();
             plot.setTitle(leftEar);
         } else{
-            series1Numbers = audiogram.valueAmplitudeRight;
-            series2Numbers = median.valueAmplitudeRight;
+            series1Numbers = audiogram.getValueAmplitudeRight();
+            series2Numbers = median.getValueAmplitudeRight();
             plot.setTitle(rightEar);
         }
 
@@ -127,9 +127,9 @@ public class DetailGraphicFragment extends Fragment {
     }
 
     public void measurementAnalysis(){
-        AnalizeAudiogram analizeAudiogram = new AnalizeAudiogram(audiogram, median, ear, typeNorm);
-        StringBuilder str = analizeAudiogram.methodAnalizeOfNorm();
-        int numIm = analizeAudiogram.getAnimation();
+        AnalyzeAudiogram analyzeAudiogram = new AnalyzeAudiogram(audiogram, median, ear, typeNorm);
+        StringBuilder str = analyzeAudiogram.methodAnalyzeOfNorm();
+        int numIm = analyzeAudiogram.getAnimation();
         if(numIm == 0){
             imageVerdict.setImageResource(R.drawable.good_smile);
         } else if(numIm == 1){

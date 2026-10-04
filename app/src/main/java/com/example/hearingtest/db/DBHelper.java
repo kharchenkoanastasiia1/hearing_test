@@ -17,14 +17,14 @@ public class DBHelper extends SQLiteOpenHelper {
     public void onCreate(SQLiteDatabase db) {
         db.execSQL(Query.createTableUsers());
         db.execSQL(Query.createTableAudiograms());
-        db.execSQL(Query.createTableMediana());
+        db.execSQL(Query.createTableMedian());
     }
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-        db.execSQL(Query.drobTableUsers());
-        db.execSQL(Query.drobTableAudiograms());
-        db.execSQL(Query.drobTableMedians());
+        db.execSQL(Query.dropTableUsers());
+        db.execSQL(Query.dropTableAudiograms());
+        db.execSQL(Query.dropTableMedians());
         onCreate(db);
     }
 }
