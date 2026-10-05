@@ -1,0 +1,18 @@
+# Настройки IDE
+.idea/
+*.iml
+
+# Кеш и результаты сборки
+.gradle/
+**/build/
+captures/
+.externalNativeBuild/
+.cxx/
+
+# Локальный путь к Android SDK
+local.properties
+
+# Ключи подписи
+*.jks
+*.keystore
+keystore.properties

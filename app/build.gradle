@@ -1,0 +1,68 @@
+plugins {
+    id 'com.android.application'
+}
+
+android {
+    namespace 'com.example.hearingtest'
+    compileSdk 31
+
+    defaultConfig {
+        applicationId 'com.example.hearingtest'
+
+        minSdk 21
+        targetSdk 31
+
+        versionCode 1
+        versionName '1.0'
+
+        testInstrumentationRunner 'androidx.test.runner.AndroidJUnitRunner'
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+
+            proguardFiles(
+                    getDefaultProguardFile('proguard-android-optimize.txt'),
+                    'proguard-rules.pro'
+            )
+        }
+    }
+
+    compileOptions {
+        coreLibraryDesugaringEnabled true
+
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+}
+
+dependencies {
+    // Java API для старых версий Android
+    coreLibraryDesugaring 'com.android.tools:desugar_jdk_libs:2.0.3'
+
+    // Интерфейс
+    implementation 'androidx.appcompat:appcompat:1.4.1'
+    implementation 'androidx.fragment:fragment:1.4.0'
+    implementation 'androidx.preference:preference:1.1.1'
+    implementation 'androidx.constraintlayout:constraintlayout:2.1.3'
+    implementation 'androidx.legacy:legacy-support-v4:1.0.0'
+    implementation 'com.google.android.material:material:1.5.0'
+
+    // Графики
+    implementation 'com.androidplot:androidplot-core:1.5.9'
+
+    // JSON
+    implementation 'com.fasterxml.jackson.core:jackson-databind:2.10.3'
+    implementation 'com.fasterxml.jackson.core:jackson-core:2.10.3'
+    implementation 'com.fasterxml.jackson.core:jackson-annotations:2.10.3'
+
+    // Генерация методов Lombok
+    compileOnly 'org.projectlombok:lombok:1.18.48'
+    annotationProcessor 'org.projectlombok:lombok:1.18.48'
+
+    // Тесты
+    testImplementation 'junit:junit:4.13.2'
+    androidTestImplementation 'androidx.test.ext:junit:1.1.3'
+    androidTestImplementation 'androidx.test.espresso:espresso-core:3.4.0'
+}
