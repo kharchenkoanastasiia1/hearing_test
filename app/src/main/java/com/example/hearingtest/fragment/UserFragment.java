@@ -32,17 +32,12 @@ import java.util.Objects;
 
 public class UserFragment extends Fragment {
 
-    User user;
-    Integer[] data;
-    int userId;
-    Boolean choise = null;
-    Integer age;
-    EditText name;
-    RadioGroup choiseSex;
-    RadioButton male;
-    RadioButton female;
-    Button save;
-    DBAdapter adapterDB;
+    private User user;
+    private Integer[] data;
+    private Boolean choice = null;
+    private Integer age;
+    private EditText name;
+    private DBAdapter adapterDB;
 
 
     @Override
@@ -66,13 +61,13 @@ public class UserFragment extends Fragment {
         ArrayAdapter<Integer> adapter = new ArrayAdapter<>(view.getContext(), android.R.layout.simple_spinner_item, data);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 
-        userId = ((MainActivity) Objects.requireNonNull(getActivity())).getUserIdForMain();
+        int userId = ((MainActivity) Objects.requireNonNull(getActivity())).getSelectedUserId();
 
         name = view.findViewById(R.id.nameBox);
-        male = view.findViewById(R.id.sexMale);
-        female = view.findViewById(R.id.sexFemale);
-        save = view.findViewById(R.id.saveUserData);
-        choiseSex = view.findViewById(R.id.radioGroupSexChoise);
+        RadioButton male = view.findViewById(R.id.sexMale);
+        RadioButton female = view.findViewById(R.id.sexFemale);
+        Button save = view.findViewById(R.id.saveUserData);
+        RadioGroup choiceSex = view.findViewById(R.id.radioGroupSexChoise);
 
         Spinner spinner = (Spinner) view.findViewById(R.id.ageBox);
         spinner.setAdapter(adapter);
@@ -80,7 +75,7 @@ public class UserFragment extends Fragment {
         if(userId > 0){
             adapterDB.open();
             user = adapterDB.getUser(userId);
-            choise = user.getSexUser();
+            choice = user.getSexUser();
             adapterDB.close();
             name.setText(user.getNameUser());
             spinner.setSelection(user.getAgeUser() - 1);
@@ -104,15 +99,15 @@ public class UserFragment extends Fragment {
         });
 
         save.setOnClickListener(v -> onClick(view));
-        choiseSex.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+        choiceSex.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(RadioGroup arg0, int id) {
                 switch(id) {
                     case R.id.sexMale:
-                        choise = false;
+                        choice = false;
                         break;
                     case R.id.sexFemale:
-                        choise = true;
+                        choice = true;
                         break;
                     default:
                         break;
@@ -121,16 +116,17 @@ public class UserFragment extends Fragment {
     }
 
 
-    public void onClick(View v){
-        if(name.getText().toString().equals("") || choise == null){
+    private void onClick(View v){
+        if(name.getText().toString().isEmpty() || choice == null){
             Toast.makeText(v.getContext(), fillAllFields, Toast.LENGTH_SHORT).show();
         } else{
-            SharedPreferences pref = ((MainActivity) Objects.requireNonNull(getActivity())).getPreferences(((MainActivity) getActivity()).MODE_PRIVATE);
+            SharedPreferences pref = ((MainActivity) Objects.requireNonNull(getActivity()))
+                    .getPreferences(((MainActivity) getActivity()).MODE_PRIVATE);
             SharedPreferences.Editor prefEditor = pref.edit();
             adapterDB.open();
             user.setNameUser(name.getText().toString());
             user.setAgeUser(age);
-            user.setSexUser(choise);
+            user.setSexUser(choice);
             if(user.getIdUser() == -1){
                 if(adapterDB.getIDUser(user.getNameUser()) == -1){
                     long id = adapterDB.insertUser(user);
@@ -154,11 +150,11 @@ public class UserFragment extends Fragment {
         }
     }
 
-    @Override
-    public void onStop() {
-        super.onStop();
-        ((MainActivity) Objects.requireNonNull(getActivity())).returnMenu(3);
-    }
+//    @Override
+//    public void onStop() {
+//        super.onStop();
+//        ((MainActivity) Objects.requireNonNull(getActivity())).returnMenu(3);
+//    }
 }
 
 

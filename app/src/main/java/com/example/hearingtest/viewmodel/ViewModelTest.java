@@ -10,13 +10,14 @@ import lombok.Getter;
 
 public class ViewModelTest extends ViewModel {
 
+    @Getter
     private Integer minVolume = -10;
     @Getter
     private Integer maxVolume = 100;
 
-    public GenerationTone generationTone;
-    public Audiogram audiogram;
-    public AudioTrack track;
+    private GenerationTone generationTone;
+    private Audiogram audiogram;
+    private AudioTrack track;
 
     private MutableLiveData<Integer> valueFrequencyLeft;
     private MutableLiveData<Integer> valueFrequencyRight;
@@ -75,7 +76,7 @@ public class ViewModelTest extends ViewModel {
     }
 
     public Audiogram execute(){
-        if(!isStarted.getValue()){
+        if(Boolean.FALSE.equals(isStarted.getValue())){
             isStarted.postValue(true);
             status.postValue(true);
             audiogram = new Audiogram();
@@ -83,6 +84,7 @@ public class ViewModelTest extends ViewModel {
                 @Override
                 public void run() {
                     for(int j = valueFrequencyLeft.getValue(); j < Audiogram.valueFrequency.length; j++){
+
                         generationTone.setStereoChannel(false);     //Left
                         generationTone.setBaseFrequency(Audiogram.valueFrequency[j]);
                         valueFrequencyLeft.postValue(j);

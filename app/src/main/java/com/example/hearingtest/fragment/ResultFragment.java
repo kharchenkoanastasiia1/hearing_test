@@ -23,10 +23,9 @@ import java.util.Objects;
 
 public class ResultFragment extends Fragment {
 
-    public List<Audiogram> audiograms;
-    public Audiogram median;
-    public Button detail;
-    public Boolean status = false;
+    private final List<Audiogram> audiograms;
+    private Audiogram median;
+    private Boolean status = false;
 
     public ResultFragment(List<Audiogram> audioCollection) {
         audiograms = audioCollection;
@@ -48,12 +47,12 @@ public class ResultFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        detail = view.findViewById(R.id.buttonResultFragment);
+        Button detail = view.findViewById(R.id.buttonResultFragment);
 
         DBAdapter adapter = new DBAdapter(view.getContext());
 
         adapter.open();
-        median = adapter.getLastRowMedians(((MainActivity) Objects.requireNonNull(getActivity())).getUserIdForMain());
+        median = adapter.getLastRowMedians(((MainActivity) Objects.requireNonNull(getActivity())).getSelectedUserId());
         adapter.close();
 
         ViewPager2 pager = view.findViewById(R.id.fragmentResult);
@@ -64,15 +63,15 @@ public class ResultFragment extends Fragment {
         detail.setOnClickListener(v -> showDetail());
     }
 
-    @Override
-    public void onStop() {
-        super.onStop();
-        if(!status){
-            ((MainActivity) Objects.requireNonNull(getActivity())).startMenu();
-        }
-    }
+//    @Override
+//    public void onStop() {
+//        super.onStop();
+//        if(!status){
+//            ((MainActivity) Objects.requireNonNull(getActivity())).startMenu();
+//        }
+//    }
 
-    public void showDetail(){
+    private void showDetail(){
         status = true;
         ((MainActivity) Objects.requireNonNull(getActivity())).returnResultFragment(audiograms.get(0), median);
     }

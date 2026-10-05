@@ -35,13 +35,12 @@ import java.text.ParsePosition;
 import java.util.Arrays;
 
 public class DetailGraphicFragment extends Fragment {
-    public TextView verdict;
-    public ImageView imageVerdict;
-    public Audiogram audiogram;
-    public Audiogram median;
-    private XYPlot plot;
-    public int ear = 0;
-    public Boolean typeNorm;
+    private TextView verdict;
+    private ImageView imageVerdict;
+    private final Audiogram audiogram;
+    private final Audiogram median;
+    private int ear = 0;
+    private final Boolean typeNorm;
 
     public DetailGraphicFragment(Audiogram audio, Audiogram med, int numEar, Boolean type) {
         audiogram = audio;
@@ -65,7 +64,7 @@ public class DetailGraphicFragment extends Fragment {
                              Bundle savedInstanceState) {
         View result = inflater.inflate(R.layout.detailgraphic_fragment, container, false);
 
-        plot = (XYPlot) result.findViewById(R.id.plotDetail);
+        XYPlot plot = (XYPlot) result.findViewById(R.id.plotDetail);
         imageVerdict = result.findViewById(R.id.imageView);
         verdict = result.findViewById(R.id.resultText);
 
@@ -126,7 +125,7 @@ public class DetailGraphicFragment extends Fragment {
         return result;
     }
 
-    public void measurementAnalysis(){
+    private void measurementAnalysis(){
         AnalyzeAudiogram analyzeAudiogram = new AnalyzeAudiogram(audiogram, median, ear, typeNorm);
         StringBuilder str = analyzeAudiogram.methodAnalyzeOfNorm();
         int numIm = analyzeAudiogram.getAnimation();

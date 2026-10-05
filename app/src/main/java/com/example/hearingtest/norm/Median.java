@@ -16,19 +16,18 @@ import java.util.List;
 @Getter
 @Setter
 public class Median {
-    private List<Audiogram> audiograms;
     private Audiogram audiogram;
     private Integer idUser;
     private final DBAdapter adapter;
 
     public Median(Context context, Integer id){
-        idUser = id;
         adapter = new DBAdapter(context);
+        idUser = id;
     }
 
     @RequiresApi(api = Build.VERSION_CODES.O)
     public void calculationMedian() throws ParseException {
-        setAudiogramsFromDB();
+        List<Audiogram> audiograms = setAudiogramsFromDB();
         if(audiograms.size() > 1){
             Integer[] left = new Integer[audiograms.get(0).getValueAmplitudeLeft().length];
             Integer[] right = new Integer[audiograms.get(0).getValueAmplitudeRight().length];
@@ -46,8 +45,8 @@ public class Median {
 
             int index = 0;
 
-            if((audiograms.size() % 2) == 0){
-                index = audiograms.size() / 2 - 1;
+            if((audiograms.size() % 2) == 0){           //если количество аудиограмм парное
+                index = audiograms.size() / 2 - 1;      //нужно взять среднее между центральными значениями матрицы
                 for(int i = 0; i < left.length; i++){
                     left[i] = (matrixValueLeft[i][index] + matrixValueLeft[i][index+1]) / 2;
                     right[i] = (matrixValueRight[i][index] + matrixValueRight[i][index+1]) / 2;
@@ -68,10 +67,11 @@ public class Median {
     }
 
     @RequiresApi(api = Build.VERSION_CODES.O)
-    private void setAudiogramsFromDB() throws ParseException {
+    private List<Audiogram> setAudiogramsFromDB() throws ParseException {
         adapter.open();
-        audiograms = adapter.getAudiograms(idUser);
+        List<Audiogram> audiograms = adapter.getAudiograms(idUser);
         adapter.close();
+        return audiograms;
     }
 
     private void setDBMedian(){

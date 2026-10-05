@@ -11,7 +11,6 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.ViewModelProvider;
 import androidx.viewpager2.widget.ViewPager2;
 
 import com.example.hearingtest.MainActivity;
@@ -28,12 +27,8 @@ import java.util.Objects;
 public class AllResultsFragment extends Fragment {
     private List<Audiogram> audiograms;
     private Audiogram median;
-    private Integer idUser;
-    private Button detail;
-    private Button delete;
     private ViewPager2 pager;
     private Boolean status = false;
-    private DBAdapter adapter;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -51,20 +46,20 @@ public class AllResultsFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        adapter = new DBAdapter(view.getContext());
+        DBAdapter adapter = new DBAdapter(view.getContext());
 
-        detail = view.findViewById(R.id.buttonResultFragment);
-        delete = view.findViewById(R.id.del);
+        Button detail = view.findViewById(R.id.buttonResultFragment);
+        Button delete = view.findViewById(R.id.del);
 
-        idUser = ((MainActivity) Objects.requireNonNull(getActivity())).getUserIdForMain();
+        int idUser = ((MainActivity) Objects.requireNonNull(getActivity())).getSelectedUserId();
 
         adapter.open();
         try {
             audiograms = adapter.getAudiograms(idUser);
+            median = adapter.getLastRowMedians(idUser);
         } catch (ParseException e) {
             e.printStackTrace();
         }
-        median = adapter.getLastRowMedians(idUser);
         adapter.close();
 
         pager = view.findViewById(R.id.fragmentResult);
@@ -77,23 +72,14 @@ public class AllResultsFragment extends Fragment {
         delete.setOnClickListener(v -> deleteAudiogram());
     }
 
-    @Override
-    public void onStop() {
-        super.onStop();
-        if(!status){
-            audiograms = null;
-            ((MainActivity) Objects.requireNonNull(getActivity())).startMenu();
-        }
-    }
-
-    public void showDetail(){
+    private void showDetail(){
         if(!audiograms.isEmpty()){
             status = true;
             ((MainActivity) Objects.requireNonNull(getActivity())).returnAllResults(audiograms.get(pager.getCurrentItem()), median);
         }
     }
 
-    public void deleteAudiogram(){
+    private void deleteAudiogram(){
         if(!audiograms.isEmpty()){
             status = true;
             DeleteDialogFragment dialog = new DeleteDialogFragment();

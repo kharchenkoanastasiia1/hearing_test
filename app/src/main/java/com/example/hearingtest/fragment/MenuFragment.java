@@ -1,6 +1,6 @@
 package com.example.hearingtest.fragment;
 
-import static com.example.hearingtest.constants.Constants.choiseAction;
+import static com.example.hearingtest.constants.Constants.choiceAction;
 
 import android.os.Build;
 import android.os.Bundle;
@@ -23,11 +23,8 @@ import java.util.Objects;
 
 public class MenuFragment extends Fragment {
 
-    User user;
-    TextView nickName;
-    Button btnTest;
-    Button btnLook;
-    Button btnRedact;
+    private User user;
+    private TextView nickName;
 
     public MenuFragment(User userData){
         user = userData;
@@ -44,26 +41,35 @@ public class MenuFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
 
         nickName = view.findViewById(R.id.nickName);
-        btnTest = view.findViewById(R.id.startTest);
-        btnLook = view.findViewById(R.id.lookResult);
-        btnRedact = view.findViewById(R.id.redactDataUser);
+        Button btnTest = view.findViewById(R.id.startTest);
+        Button btnLook = view.findViewById(R.id.lookResult);
+        Button btnRedact = view.findViewById(R.id.redactDataUser);
 
-        nickName.setText(choiseAction + user.getNameUser() + " ;)");
+        nickName.setText(choiceAction + user.getNameUser() + " ;)");
 
         btnTest.setOnClickListener(v -> onClickTest());
         btnLook.setOnClickListener(v -> onClickLookResult());
         btnRedact.setOnClickListener(v -> onClickRedact());
     }
 
-    public void onClickTest(){
+    @Override
+    public void onResume() {
+        super.onResume();
+
+        user = ((MainActivity) requireActivity()).getCurrentUser();
+
+        nickName.setText(choiceAction + user.getNameUser() + " ;)");
+    }
+
+    private void onClickTest(){
         ((MainActivity) Objects.requireNonNull(getActivity())).returnMenu(1);
     }
 
-    public void onClickLookResult(){
+    private void onClickLookResult(){
         ((MainActivity) Objects.requireNonNull(getActivity())).returnMenu(2);
     }
 
-    public void onClickRedact(){
+    private void onClickRedact(){
         ((MainActivity) Objects.requireNonNull(getActivity())).returnMenu(3);
     }
 }

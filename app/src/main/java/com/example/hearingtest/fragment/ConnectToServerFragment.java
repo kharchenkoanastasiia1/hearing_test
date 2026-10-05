@@ -21,8 +21,8 @@ import com.example.hearingtest.MainActivity;
 import com.example.hearingtest.R;
 import com.example.hearingtest.db.DBAdapter;
 import com.example.hearingtest.audiogram.Audiogram;
-import com.example.hearingtest.audiogram.SyncOfflineAudiogramsUseCase;
-import com.example.hearingtest.audiogram.AudiogramForRemoteDB;
+import com.example.hearingtest.server.SyncOfflineAudiogramsUseCase;
+import com.example.hearingtest.server.AudiogramForRemoteDB;
 import com.example.hearingtest.server.JavaScriptInterface;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -84,14 +84,14 @@ public class ConnectToServerFragment extends Fragment {
         btnDisconnect.setOnClickListener(v -> onClickReturnMenu());
     }
 
-    public void onClickReturnMenu(){
+    private void onClickReturnMenu(){
         ((MainActivity) Objects.requireNonNull(getActivity())).returnMenu(3);
     }
 
     @RequiresApi(api = Build.VERSION_CODES.O)
     public void connectToDatabase(View view){
         DBAdapter adapter = new DBAdapter(view.getContext());
-        int idUser = ((MainActivity) Objects.requireNonNull(getActivity())).getUserIdForMain();
+        int idUser = ((MainActivity) Objects.requireNonNull(getActivity())).getSelectedUserId();
         adapter.open();
         try {
             audiograms = adapter.getAudiograms(idUser);
@@ -116,7 +116,7 @@ public class ConnectToServerFragment extends Fragment {
         }
     }
 
-    public void execute() throws JsonProcessingException {
+    private void execute() throws JsonProcessingException {
         Runnable runnable = new Runnable() {
             @RequiresApi(api = Build.VERSION_CODES.O)
             @Override

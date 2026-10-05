@@ -79,7 +79,7 @@ public class ViewModelTestAdvanced extends ViewModel {
     }
 
     public Audiogram execute(){
-        if(!isStarted.getValue()){
+        if(Boolean.FALSE.equals(isStarted.getValue())){
             isStarted.postValue(true);
             statusHear.postValue(true);
             audiogram = new Audiogram();

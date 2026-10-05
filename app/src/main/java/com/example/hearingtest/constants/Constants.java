@@ -1,7 +1,7 @@
 package com.example.hearingtest.constants;
 
 public class Constants {
-    public static final String choiseAction = "Виберіть потрібну дію, ";
+    public static final String choiceAction = "Виберіть потрібну дію, ";
     public static final String choiseUser = "Виберіть користувача";
     public static final String onHeadset = "Підключіть гарнітуру";
     public static final String onMaxVolume = "Встановіть гучність на максимум";

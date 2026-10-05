@@ -29,17 +29,17 @@ import com.example.hearingtest.users.UserCollection;
 import java.util.Objects;
 
 public class MenuUserFragment extends Fragment {
-    Button btnCreate;
-    Button btnRedact;
-    Button btnConnect;
-    TextView userText;
-    DBAdapter adapterDB;
-    UserCollection usersCollection;
-    User user;
-    String[] userData;
-    String currentUserName;
-    Boolean change = false;
-    Boolean status = false;
+    private Button btnCreate;
+    private Button btnRedact;
+    private Button btnConnect;
+    private TextView userText;
+    private DBAdapter adapterDB;
+    private UserCollection usersCollection;
+    private User user;
+    private String[] userData;
+    private String currentUserName;
+    private Boolean change = false;
+    private Boolean status = false;
 
     public MenuUserFragment(User userMain){
         user = userMain;
@@ -78,7 +78,8 @@ public class MenuUserFragment extends Fragment {
                 if(change){
                     if(position != 0){
                         user = usersCollection.getUsers().get(position-1);
-                        SharedPreferences pref = ((MainActivity) Objects.requireNonNull(getActivity())).getPreferences(((MainActivity) getActivity()).MODE_PRIVATE);
+                        SharedPreferences pref = ((MainActivity) Objects.requireNonNull(getActivity()))
+                                .getPreferences(((MainActivity) getActivity()).MODE_PRIVATE);
                         SharedPreferences.Editor prefEditor = pref.edit();
                         prefEditor.putInt("ID", user.getIdUser());
                         prefEditor.putString("NAME", user.getNameUser());
@@ -98,22 +99,22 @@ public class MenuUserFragment extends Fragment {
         btnConnect.setOnClickListener(v -> onClickConnect());
     }
 
-    public void onClickCreate(){
+    private void onClickCreate(){
         status = true;
         ((MainActivity) Objects.requireNonNull(getActivity())).returnMenuUser(user, 1);
     }
 
-    public void onClickRedact(View v){
+    private void onClickRedact(View v){
         status = true;
         ((MainActivity) Objects.requireNonNull(getActivity())).returnMenuUser(user, 2);
     }
 
-    public void onClickConnect(){
+    private void onClickConnect(){
         status = true;
         ((MainActivity) Objects.requireNonNull(getActivity())).returnMenuUser(user, 3);
     }
 
-    public void fillUsersData(){
+    private void fillUsersData(){
         adapterDB.open();
         usersCollection = adapterDB.getUsers();
         adapterDB.close();
@@ -125,13 +126,13 @@ public class MenuUserFragment extends Fragment {
         }
     }
 
-    @Override
-    public void onStop() {
-        super.onStop();
-        if(!status){
-            ((MainActivity) Objects.requireNonNull(getActivity())).startMenu();
-        }
-    }
+//    @Override
+//    public void onStop() {
+//        super.onStop();
+//        if(!status){
+//            ((MainActivity) Objects.requireNonNull(getActivity())).startMenu();
+//        }
+//    }
 }
 
 

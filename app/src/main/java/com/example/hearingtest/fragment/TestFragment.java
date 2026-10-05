@@ -53,9 +53,11 @@ public class TestFragment extends Fragment {
         btnFetch = (Button)view.findViewById(R.id.button6);
 
         ProgressBar indicatorBarLeft = (ProgressBar) view.findViewById(R.id.progressBar3);
+        indicatorBarLeft.setMin(model.getMinVolume() + 10);
         indicatorBarLeft.setMax(model.getMaxVolume() + 20);
 
         ProgressBar indicatorBarRight = (ProgressBar) view.findViewById(R.id.progressBar5);
+        indicatorBarRight.setMin(model.getMinVolume() + 10);
         indicatorBarRight.setMax(model.getMaxVolume() + 20);
 
         model.getValueFrequencyLeft().observe(getViewLifecycleOwner(), valueFrequency -> {
@@ -98,13 +100,13 @@ public class TestFragment extends Fragment {
         }
     }
 
-    @Override
-    public void onStop() {
-        super.onStop();
-        if(!endTest){
-            model.setEmergencyExit(true);
-            model.setIsEnd(false);
-            ((MainActivity) Objects.requireNonNull(getActivity())).startMenu();
-        }
-    }
+//    @Override
+//    public void onStop() {
+//        super.onStop();
+//        if(!endTest){
+//            model.setEmergencyExit(true);
+//            model.setIsEnd(false);
+//            ((MainActivity) Objects.requireNonNull(getActivity())).startMenu();
+//        }
+//    }
 }

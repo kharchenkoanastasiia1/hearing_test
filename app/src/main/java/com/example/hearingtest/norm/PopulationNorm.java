@@ -10,9 +10,9 @@ public class PopulationNorm {
         if(sex){
             if(age <= 29){
                 audiogram = new Audiogram(Female_20_29, Female_20_29);
-            } else if(age > 29 && age <= 39){
+            } else if(age <= 39){
                 audiogram = new Audiogram(Female_30_39, Female_30_39);
-            } else if(age > 39 && age <= 49){
+            } else if(age <= 49){
                 audiogram = new Audiogram(Female_40_49, Female_40_49);
             } else{
                 audiogram = new Audiogram(Female_50_59, Female_50_59);
@@ -20,9 +20,9 @@ public class PopulationNorm {
         } else{
             if(age <= 29){
                 audiogram = new Audiogram(Male_20_29, Male_20_29);
-            } else if(age > 29 && age <= 39){
+            } else if(age <= 39){
                 audiogram = new Audiogram(Male_30_39, Male_30_39);
-            } else if(age > 39 && age <= 49){
+            } else if(age <= 49){
                 audiogram = new Audiogram(Male_40_49, Male_40_49);
             } else{
                 audiogram = new Audiogram(Male_50_59, Male_50_59);

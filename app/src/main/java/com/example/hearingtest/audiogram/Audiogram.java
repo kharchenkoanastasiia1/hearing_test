@@ -25,39 +25,33 @@ public class Audiogram {
     }
 
     public Audiogram(Integer[] amplitudeInDecibelsLeft, Integer[] amplitudeInDecibelsRight) {
-        valueAmplitudeLeft = amplitudeInDecibelsLeft;
-        valueAmplitudeRight = amplitudeInDecibelsRight;
+        valueAmplitudeLeft = copyChecked(amplitudeInDecibelsLeft);
+        valueAmplitudeRight = copyChecked(amplitudeInDecibelsRight);
     }
 
-    public Audiogram(Integer[] amplitudeInDecibelsLeft, Integer[] amplitudeInDecibelsRight, Integer id) {
-        valueAmplitudeLeft = amplitudeInDecibelsLeft;
-        valueAmplitudeRight = amplitudeInDecibelsRight;
-        idUser = id;
-    }
-
-    public Audiogram(Integer[] amplitudeInDecibelsLeft, Integer[] amplitudeInDecibelsRight, Boolean status, Integer idUser) {
-        if(amplitudeInDecibelsLeft.length == 8 || amplitudeInDecibelsRight.length == 8){
-            valueAmplitudeLeft = amplitudeInDecibelsLeft;
-            valueAmplitudeRight = amplitudeInDecibelsRight;
-            this.setIdAudiogram(idCounter);
-            this.setIdCounter(status);
-            this.setIdUser(idUser);
-        } else{
-            valueAmplitudeLeft = new Integer[8];
-            valueAmplitudeRight = new Integer[8];
-        }
+    public Audiogram(Integer[] amplitudeInDecibelsLeft, Integer[] amplitudeInDecibelsRight, Integer idU) {
+        valueAmplitudeLeft = copyChecked(amplitudeInDecibelsLeft);
+        valueAmplitudeRight = copyChecked(amplitudeInDecibelsRight);
+        idUser = idU;
     }
 
     //Получение с БД:
     @RequiresApi(api = Build.VERSION_CODES.O)
-    public Audiogram(Integer idAudio, Integer[] amplitudeInDecibelsLeft, Integer[] amplitudeInDecibelsRight, LocalDate date, Integer idUser) {
-        if(amplitudeInDecibelsLeft.length == 8 || amplitudeInDecibelsRight.length == 8){
-            valueAmplitudeLeft = amplitudeInDecibelsLeft;
-            valueAmplitudeRight = amplitudeInDecibelsRight;
-            this.setIdAudiogram(idAudio);
-            this.setIdUser(idUser);
-            this.setDateCounter(date);
-        }
+    public Audiogram(Integer idAudio, Integer[] amplitudeInDecibelsLeft, Integer[] amplitudeInDecibelsRight, LocalDate date, Integer idU) {
+        valueAmplitudeLeft = copyChecked(amplitudeInDecibelsLeft);
+        valueAmplitudeRight = copyChecked(amplitudeInDecibelsRight);
+        idAudiogram = idAudio;
+        idUser = idU;
+        dateRecord = date;
+    }
+
+    private boolean validShape(Integer[] values) {
+        return values != null && values.length == valueFrequency.length;
+    }
+    private Integer[] copyChecked(Integer[] values) {
+        if (!validShape(values))
+            throw new IllegalArgumentException("Invalid audiogram shape");
+        return values.clone();
     }
 
     public void setIdCounter(Boolean status) {
@@ -67,12 +61,6 @@ public class Audiogram {
             this.idCounter = 1;
         }
     }
-
-    @RequiresApi(api = Build.VERSION_CODES.O)
-    public void setDateCounter(LocalDate date) {
-        this.dateRecord = date;
-    }
-
 
     @NonNull
     @Override

@@ -1,7 +1,8 @@
-package com.example.hearingtest.audiogram;
+package com.example.hearingtest.server;
 import android.os.Build;
 
 import androidx.annotation.RequiresApi;
+import com.example.hearingtest.audiogram.Audiogram;
 
 import java.time.LocalDate;
 import java.time.ZoneId;

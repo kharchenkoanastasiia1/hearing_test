@@ -27,7 +27,6 @@ import java.util.Objects;
 public class AdvancedTestFragment extends Fragment {
     private Audiogram audiogram;
     private ViewModelTestAdvanced model;
-    private Boolean endTest = false;
     private Boolean start = false;
     private Button btnHear;
     private Button btnNotHear;
@@ -94,7 +93,6 @@ public class AdvancedTestFragment extends Fragment {
 
         model.getIsEnd().observe(getViewLifecycleOwner(), end -> {
             if(end){
-                endTest = true;
                 model.setEmergencyExit(false);
                 model.setIsEnd(false);
                 try {
@@ -118,16 +116,6 @@ public class AdvancedTestFragment extends Fragment {
             rightImage.setVisibility(View.VISIBLE);
             btnStart.setVisibility(View.INVISIBLE);
             start = true;
-        }
-    }
-
-    @Override
-    public void onStop() {
-        super.onStop();
-        if(!endTest){
-            model.setEmergencyExit(true);
-            model.setIsEnd(false);
-            ((MainActivity) Objects.requireNonNull(getActivity())).startMenu();
         }
     }
 }

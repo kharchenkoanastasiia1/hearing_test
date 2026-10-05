@@ -31,12 +31,10 @@ import java.util.Arrays;
 import java.util.List;
 
 public class GraphicFragment extends Fragment {
-    public List<Audiogram> audiograms;
-    public Audiogram audiogram;
-    private int pageNumber;
+    private final List<Audiogram> audiograms;
+    private Audiogram audiogram;
     @Setter
     private static int idUser;
-    private XYPlot plot;
 
     public static GraphicFragment newInstance(List<Audiogram> audio, int page, int id) {
         GraphicFragment fragment = new GraphicFragment(audio);
@@ -54,7 +52,7 @@ public class GraphicFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        pageNumber = getArguments() != null ? getArguments().getInt("num") : 1;
+        int pageNumber = getArguments() != null ? getArguments().getInt("num") : 1;
         audiogram = audiograms.get(pageNumber);
     }
 
@@ -64,7 +62,7 @@ public class GraphicFragment extends Fragment {
                              Bundle savedInstanceState) {
         View result = inflater.inflate(R.layout.graphic_fragment, container, false);
 
-        plot = (XYPlot) result.findViewById(R.id.plot);
+        XYPlot plot = (XYPlot) result.findViewById(R.id.plot);
         //Настройка осей:
         plot.setDomainBoundaries(0,7, BoundaryMode.FIXED);
         plot.setDomainStep(StepMode.SUBDIVIDE, 8);  //сетка по оси X

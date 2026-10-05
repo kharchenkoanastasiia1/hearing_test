@@ -1,6 +1,7 @@
-package com.example.hearingtest.audiogram;
+package com.example.hearingtest.server;
 
 import android.annotation.SuppressLint;
+import com.example.hearingtest.audiogram.Audiogram;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonSetter;
 import lombok.Getter;
@@ -71,25 +72,25 @@ public class AudiogramForRemoteDB {
     @JsonFormat(pattern="yyyy-MM-dd")
     private Date date;
 
-    public AudiogramForRemoteDB(Audiogram audiogram, String username) throws ParseException {
-        this.username = username;
-        this.f125Left = audiogram.getValueAmplitudeLeft()[0];
-        this.f250Left = audiogram.getValueAmplitudeLeft()[1];
-        this.f500Left = audiogram.getValueAmplitudeLeft()[2];
-        this.f1000Left = audiogram.getValueAmplitudeLeft()[3];
-        this.f2000Left = audiogram.getValueAmplitudeLeft()[4];
-        this.f3000Left = audiogram.getValueAmplitudeLeft()[5];
-        this.f4000Left = audiogram.getValueAmplitudeLeft()[6];
-        this.f8000Left = audiogram.getValueAmplitudeLeft()[7];
-        this.f125Right = audiogram.getValueAmplitudeRight()[0];
-        this.f250Right = audiogram.getValueAmplitudeRight()[1];
-        this.f500Right = audiogram.getValueAmplitudeRight()[2];
-        this.f1000Right = audiogram.getValueAmplitudeRight()[3];
-        this.f2000Right = audiogram.getValueAmplitudeRight()[4];
-        this.f3000Right = audiogram.getValueAmplitudeRight()[5];
-        this.f4000Right = audiogram.getValueAmplitudeRight()[6];
-        this.f8000Right = audiogram.getValueAmplitudeRight()[7];
+    public AudiogramForRemoteDB(Audiogram audiogram, String userName) throws ParseException {
+        username = userName;
+        f125Left = audiogram.getValueAmplitudeLeft()[0];
+        f250Left = audiogram.getValueAmplitudeLeft()[1];
+        f500Left = audiogram.getValueAmplitudeLeft()[2];
+        f1000Left = audiogram.getValueAmplitudeLeft()[3];
+        f2000Left = audiogram.getValueAmplitudeLeft()[4];
+        f3000Left = audiogram.getValueAmplitudeLeft()[5];
+        f4000Left = audiogram.getValueAmplitudeLeft()[6];
+        f8000Left = audiogram.getValueAmplitudeLeft()[7];
+        f125Right = audiogram.getValueAmplitudeRight()[0];
+        f250Right = audiogram.getValueAmplitudeRight()[1];
+        f500Right = audiogram.getValueAmplitudeRight()[2];
+        f1000Right = audiogram.getValueAmplitudeRight()[3];
+        f2000Right = audiogram.getValueAmplitudeRight()[4];
+        f3000Right = audiogram.getValueAmplitudeRight()[5];
+        f4000Right = audiogram.getValueAmplitudeRight()[6];
+        f8000Right = audiogram.getValueAmplitudeRight()[7];
         @SuppressLint("SimpleDateFormat") DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
-        this.date = df.parse(audiogram.getDateRecord().toString());
+        date = df.parse(audiogram.getDateRecord().toString());
     }
 }

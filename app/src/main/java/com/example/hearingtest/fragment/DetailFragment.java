@@ -14,22 +14,17 @@ import androidx.annotation.RequiresApi;
 import androidx.fragment.app.Fragment;
 import androidx.viewpager2.widget.ViewPager2;
 
-import com.example.hearingtest.MainActivity;
 import com.example.hearingtest.R;
 import com.example.hearingtest.adapter.DetailAdapter;
 import com.example.hearingtest.audiogram.Audiogram;
-import com.example.hearingtest.constants.AgeNormConstants;
-import com.example.hearingtest.norm.PopulationNorm;
-
-import java.util.Objects;
 
 public class DetailFragment extends Fragment {
 
-    public Audiogram audiogram;
-    public Audiogram median;
-    public Button personNorm;
-    public Button populNorm;
-    public Audiogram populationNorm;
+    private final Audiogram audiogram;
+    private final Audiogram median;
+    private final Audiogram populationNorm;
+    private Button personNorm;
+    private Button populNorm;
 
     public DetailFragment(Audiogram audiog, Audiogram med, Audiogram ageNorm){
         audiogram = audiog;
@@ -58,13 +53,13 @@ public class DetailFragment extends Fragment {
 
         personNorm.setEnabled(false);
 
-        choiseNorm(view, populationNorm, false);
+        choiceNorm(view, populationNorm, false);
 
-        personNorm.setOnClickListener(v -> choiseNorm(view, median, true));
-        populNorm.setOnClickListener(v -> choiseNorm(view, populationNorm, false));
+        personNorm.setOnClickListener(v -> choiceNorm(view, median, true));
+        populNorm.setOnClickListener(v -> choiceNorm(view, populationNorm, false));
     }
 
-    public void choiseNorm(View view, Audiogram audio, Boolean type){
+    private void choiceNorm(View view, Audiogram audio, Boolean type){
         if(audio != null){
             ViewPager2 pager = view.findViewById(R.id.fragmentDetail);
             DetailAdapter pageAdapter = new DetailAdapter(getActivity(), audiogram, audio, type);
@@ -85,11 +80,5 @@ public class DetailFragment extends Fragment {
                 populNorm.setEnabled(false);
             }
         }
-    }
-
-    @Override
-    public void onStop() {
-        super.onStop();
-        ((MainActivity) Objects.requireNonNull(getActivity())).returnMenu(2);
     }
 }

@@ -24,17 +24,14 @@ import java.util.Objects;
 
 public class PreparationTestFragment extends Fragment {
 
-    CheckBox headphones;
-    CheckBox maxVolume;
-    CheckBox individualNorm;
-    Button startTest;
-    Button startTestAdvanced;
-    Boolean allowStartVolume = false;
-    Boolean allowStartHeadphones = false;
-    Boolean status = false;
-    Boolean end = false;
-    ViewModelPreparation model;
-    AudioManager audioManager;
+    private CheckBox headphones;
+    private CheckBox maxVolume;
+    private CheckBox individualNorm;
+    private Boolean allowStartVolume = false;
+    private Boolean allowStartHeadphones = false;
+    private Boolean end = false;
+    private ViewModelPreparation model;
+    private AudioManager audioManager;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -52,8 +49,8 @@ public class PreparationTestFragment extends Fragment {
         headphones = view.findViewById(R.id.onHeadphones);
         maxVolume = view.findViewById(R.id.onMaxVolume);
         individualNorm = view.findViewById(R.id.checkBoxIndNorm);
-        startTest = view.findViewById(R.id.startTesting);
-        startTestAdvanced = view.findViewById(R.id.startTestingAdvanced);
+        Button startTest = view.findViewById(R.id.startTesting);
+        Button startTestAdvanced = view.findViewById(R.id.startTestingAdvanced);
 
         startTest.setOnClickListener(v -> onClickStartTest(view));
         startTestAdvanced.setOnClickListener(v -> onClickStartTestAdvanced(view));
@@ -110,13 +107,13 @@ public class PreparationTestFragment extends Fragment {
             public void run() {
                 int volume;
 
-                while(!model.getIsStarted().getValue()){
+                while(Boolean.FALSE.equals(model.getIsStarted().getValue())){
                     volume = audioManager.getStreamVolume(AudioManager.STREAM_MUSIC);
                     model.setAllowStartVolume(volume == audioManager.getStreamMaxVolume(AudioManager.STREAM_MUSIC));
 
                     AudioDeviceInfo[] devices = audioManager.getDevices(AudioManager.GET_DEVICES_OUTPUTS);
                     int count = 0;
-                    status = false;
+                    boolean status = false;
                     for(AudioDeviceInfo device : devices){
                         if(device.getType() == AudioDeviceInfo.TYPE_WIRED_HEADSET){
                             status = true;
@@ -142,14 +139,14 @@ public class PreparationTestFragment extends Fragment {
         thread.start();
     }
 
-    @Override
-    public void onStop() {
-        super.onStop();
-        if(!end){
-            model.restart();
-            ((MainActivity) Objects.requireNonNull(getActivity())).startMenu();
-        }
-    }
+//    @Override
+//    public void onStop() {
+//        super.onStop();
+//        if(!end){
+//            model.restart();
+//            ((MainActivity) Objects.requireNonNull(getActivity())).startMenu();
+//        }
+//    }
 }
 
 

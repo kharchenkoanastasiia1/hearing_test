@@ -18,14 +18,14 @@ public class AnalyzeAudiogram {
     private final Audiogram audiogram;
     private final Audiogram normal;
     private final int ear;
-    private final Boolean isNorm;  //false - по популяционнной нормой
-                                    //true - по персональной нормой
+    private final Boolean isNorm;  //false - по популяционной норме
+                                    //true - по персональной норме
     @Getter
-    private int animation = 0;
-    private int betterNorm = 0;
-    private int norm = 0;
-    private int significant = 0;
-    private int insignificant = 0;
+    private int animation;
+    private int betterNorm;
+    private int norm;
+    private int significant;
+    private int insignificant;
 
     public AnalyzeAudiogram(Audiogram audio, Audiogram norm, Integer numberEar, Boolean status) {
         audiogram = audio;
@@ -35,6 +35,8 @@ public class AnalyzeAudiogram {
     }
 
     public StringBuilder methodAnalyzeOfNorm() {
+        betterNorm = norm = significant = insignificant = 0;
+        animation = 0;
         countState();
 
         StringBuilder str = new StringBuilder();
