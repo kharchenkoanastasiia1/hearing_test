@@ -1,4 +1,5 @@
 package com.example.hearingtest.fragment;
+import android.media.AudioTrack;
 import com.example.hearingtest.MainActivity;
 import com.example.hearingtest.R;
 import com.example.hearingtest.audiogram.Audiogram;
@@ -26,7 +27,6 @@ import java.util.Objects;
 public class TestFragment extends Fragment {
     private Audiogram audiogram;
     private ViewModelTest model;
-    private Boolean endTest = false;
     private Boolean start = false;
     private Button btnFetch;
 
@@ -42,22 +42,20 @@ public class TestFragment extends Fragment {
 
         model = new ViewModelProvider(requireActivity()).get(ViewModelTest.class);
 
-        ProgressBar indicatorBarLeftFrequency = (ProgressBar) view.findViewById(R.id.progressBar);
+        ProgressBar indicatorBarLeftFrequency = (ProgressBar) view.findViewById(R.id.progressBarFrequencyLeftEar);
         indicatorBarLeftFrequency.setMax(Audiogram.valueFrequency.length);
 
-        ProgressBar indicatorBarRightFrequency = (ProgressBar) view.findViewById(R.id.progressBar4);
+        ProgressBar indicatorBarRightFrequency = (ProgressBar) view.findViewById(R.id.progressBarFrequencyRightEar);
         indicatorBarRightFrequency.setMax(Audiogram.valueFrequency.length);
 
         TextView statusView = (TextView) view.findViewById(R.id.textView);
 
-        btnFetch = (Button)view.findViewById(R.id.button6);
+        btnFetch = (Button)view.findViewById(R.id.buttonHear);
 
-        ProgressBar indicatorBarLeft = (ProgressBar) view.findViewById(R.id.progressBar3);
-        indicatorBarLeft.setMin(model.getMinVolume() + 10);
+        ProgressBar indicatorBarLeft = (ProgressBar) view.findViewById(R.id.progressBarLeftEar);
         indicatorBarLeft.setMax(model.getMaxVolume() + 20);
 
-        ProgressBar indicatorBarRight = (ProgressBar) view.findViewById(R.id.progressBar5);
-        indicatorBarRight.setMin(model.getMinVolume() + 10);
+        ProgressBar indicatorBarRight = (ProgressBar) view.findViewById(R.id.progressBarRightEar);
         indicatorBarRight.setMax(model.getMaxVolume() + 20);
 
         model.getValueFrequencyLeft().observe(getViewLifecycleOwner(), valueFrequency -> {
@@ -72,14 +70,13 @@ public class TestFragment extends Fragment {
                 statusView.setText(Constants.soundInRightEar + Audiogram.valueFrequency[valueFrequency] + Constants.hz);
             }
         });
-        //indicatorBarLeft.setProgress(valueVolume + 20);
         model.getValueSoundLevelLeft().observe(getViewLifecycleOwner(), indicatorBarLeft::setProgress);
-        //            indicatorBarRight.setProgress(valueVolume + 20);
         model.getValueSoundLevelRight().observe(getViewLifecycleOwner(), indicatorBarRight::setProgress);
+//        model.getValueSoundLevelLeft().observe(getViewLifecycleOwner(), level -> indicatorBarLeft.setProgress(level + 10));
+//        model.getValueSoundLevelRight().observe(getViewLifecycleOwner(), level -> indicatorBarRight.setProgress(level + 10));
 
         model.getIsEnd().observe(getViewLifecycleOwner(), end -> {
             if(end){
-                endTest = true;
                 model.setEmergencyExit(false);
                 model.setIsEnd(false);
                 try {
@@ -100,13 +97,10 @@ public class TestFragment extends Fragment {
         }
     }
 
-//    @Override
-//    public void onStop() {
-//        super.onStop();
-//        if(!endTest){
-//            model.setEmergencyExit(true);
-//            model.setIsEnd(false);
-//            ((MainActivity) Objects.requireNonNull(getActivity())).startMenu();
-//        }
-//    }
+    @Override
+    public void onStop() {
+        super.onStop();
+
+        model.setEmergencyExit(true);
+    }
 }

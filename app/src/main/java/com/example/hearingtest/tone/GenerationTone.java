@@ -15,13 +15,6 @@ public class GenerationTone {
     private Integer samplingFrequency = 44100;
     private Boolean stereoChannel = true;              //true - left, false - right
 
-    public GenerationTone(int baseFrequen, int countMillisec, int vol, boolean stCh) {
-        this.baseFrequency = baseFrequen;
-        this.countMilliseconds = countMillisec;
-        this.volume = vol;
-        this.stereoChannel = stCh;
-    }
-
     public GenerationTone(){}
 
     public AudioTrack generateTone() {
@@ -30,18 +23,19 @@ public class GenerationTone {
         short[] buf = new short[count];
         AudioTrack track = new AudioTrack(AudioManager.STREAM_MUSIC, samplingFrequency,
                 AudioFormat.CHANNEL_OUT_STEREO, AudioFormat.ENCODING_PCM_16BIT,
-                count * (Short.SIZE / 8), AudioTrack.MODE_STATIC);
+                count * (Short.SIZE / 8), AudioTrack.MODE_STATIC);  //MODE_STATIC - для коротких звуков (до нескольких секунд),
+                                                                                    // которые загружаются в память один раз
 
         for(int i = 0; i < count; i++){
             float angle = i / (float)(samplingFrequency / baseFrequency) * 2 * (float)Math.PI;
             if(stereoChannel){
-                buf[i] = 0;
-                i++;
                 buf[i] = (short) (( (float) Math.sin(angle) * ((float) Math.pow(10, (volume / 20.0))) ) * Short.SIZE);
+                i++;
+                buf[i] = 0;
             } else{
-                buf[i] = (short) (( (float) Math.sin(angle) * ((float) Math.pow(10, (volume / 20.0))) ) * Short.SIZE);
-                i++;
                 buf[i] = 0;
+                i++;
+                buf[i] = (short) (( (float) Math.sin(angle) * ((float) Math.pow(10, (volume / 20.0))) ) * Short.SIZE);
             }
         }
         track.write(buf,0, count);
@@ -49,12 +43,14 @@ public class GenerationTone {
     }
 
     public void clearMemory(AudioTrack track) {
-        try {
-            track.pause();
-        } catch (IllegalStateException e) {
-            throw new IllegalStateException(e.getMessage());
+        if(track != null){
+            try {
+                track.pause();
+            } catch (IllegalStateException e) {
+                throw new IllegalStateException(e.getMessage());
+            }
+            track.flush();
+            track.release();
         }
-        track.flush();
-        track.release();
     }
 }

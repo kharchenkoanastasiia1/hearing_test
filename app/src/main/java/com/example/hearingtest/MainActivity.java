@@ -143,7 +143,7 @@ public class MainActivity extends AppCompatActivity  {
         List<Audiogram> audiograms = new ArrayList<>();
         audiograms.add(audiogram);
         resultFragment = new ResultFragment(audiograms);
-        openScreen(resultFragment);
+        showResultsAfterTest(resultFragment);
     }
 
     //Пересчет медианы по условию и показ результатов для расширенного теста
@@ -164,7 +164,22 @@ public class MainActivity extends AppCompatActivity  {
         List<Audiogram> audiograms = new ArrayList<>();
         audiograms.add(audiogram);
         resultFragment = new ResultFragment(audiograms);
-        openScreen(resultFragment);
+        showResultsAfterTest(resultFragment);
+    }
+
+    private void showResultsAfterTest(ResultFragment fragment) {
+        // Возвращаемся к корневому экрану — главному меню.
+        getSupportFragmentManager().popBackStackImmediate(
+                null,
+                androidx.fragment.app.FragmentManager.POP_BACK_STACK_INCLUSIVE
+        );
+
+        // Сохраняем только переход: главное меню → результаты.
+        getSupportFragmentManager()
+                .beginTransaction()
+                .replace(R.id.frameFragment, fragment)
+                .addToBackStack(null)
+                .commit();
     }
 
     //Запуск деталей результатов каждого тестирования при просмотре всех результатов

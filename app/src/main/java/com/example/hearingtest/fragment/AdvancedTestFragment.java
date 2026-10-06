@@ -49,12 +49,12 @@ public class AdvancedTestFragment extends Fragment {
 
         model = new ViewModelProvider(requireActivity()).get(ViewModelTestAdvanced.class);
 
-        TextView statusView = (TextView) view.findViewById(R.id.textView6);
-        btnHear = (Button)view.findViewById(R.id.button2);
-        btnNotHear = (Button)view.findViewById(R.id.button3);
-        btnStart = (Button)view.findViewById(R.id.button4);
-        leftImage = view.findViewById(R.id.imageView3);
-        rightImage = view.findViewById(R.id.imageView4);
+        TextView statusView = (TextView) view.findViewById(R.id.textViewInstruction);
+        btnHear = (Button)view.findViewById(R.id.buttonAdvanceHear);
+        btnNotHear = (Button)view.findViewById(R.id.buttonNoHear);
+        btnStart = (Button)view.findViewById(R.id.buttonStart);
+        leftImage = view.findViewById(R.id.imageLeftEar);
+        rightImage = view.findViewById(R.id.imageRigtEar);
 
         btnHear.setVisibility(View.INVISIBLE);
         btnNotHear.setVisibility(View.INVISIBLE);
@@ -117,5 +117,12 @@ public class AdvancedTestFragment extends Fragment {
             btnStart.setVisibility(View.INVISIBLE);
             start = true;
         }
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+
+        model.setEmergencyExit(true);
     }
 }

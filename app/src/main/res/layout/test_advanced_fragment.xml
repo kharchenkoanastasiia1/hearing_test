@@ -6,7 +6,7 @@
 
 
     <TextView
-        android:id="@+id/textView6"
+        android:id="@+id/textViewInstruction"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="30dp"
@@ -19,7 +19,7 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <Button
-        android:id="@+id/button2"
+        android:id="@+id/buttonAdvanceHear"
         android:layout_width="150dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="20dp"
@@ -29,10 +29,10 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.501"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/imageView4" />
+        app:layout_constraintTop_toBottomOf="@+id/imageRigtEar" />
 
     <Button
-        android:id="@+id/button3"
+        android:id="@+id/buttonNoHear"
         android:layout_width="150dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="20dp"
@@ -42,10 +42,10 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/button2" />
+        app:layout_constraintTop_toBottomOf="@+id/buttonAdvanceHear" />
 
     <Button
-        android:id="@+id/button4"
+        android:id="@+id/buttonStart"
         android:layout_width="150dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
@@ -54,25 +54,25 @@
         android:textStyle="italic"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/button3" />
+        app:layout_constraintTop_toBottomOf="@+id/buttonNoHear" />
 
     <ImageView
-        android:id="@+id/imageView3"
+        android:id="@+id/imageLeftEar"
         android:layout_width="204dp"
         android:layout_height="166dp"
         android:layout_marginTop="40dp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView6"
+        app:layout_constraintTop_toBottomOf="@+id/textViewInstruction"
         app:srcCompat="@drawable/left" />
 
     <ImageView
-        android:id="@+id/imageView4"
+        android:id="@+id/imageRigtEar"
         android:layout_width="204dp"
         android:layout_height="166dp"
         android:layout_marginTop="40dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.666"
-        app:layout_constraintStart_toEndOf="@+id/imageView3"
-        app:layout_constraintTop_toBottomOf="@+id/textView6"
+        app:layout_constraintStart_toEndOf="@+id/imageLeftEar"
+        app:layout_constraintTop_toBottomOf="@+id/textViewInstruction"
         app:srcCompat="@drawable/right" />
 </androidx.constraintlayout.widget.ConstraintLayout>
